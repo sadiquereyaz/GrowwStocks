@@ -21,3 +21,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "GrowwStocks"
 include(":app")
+include(":feature:home")
+include(":feature:product_detail")
+include(":feature:watchlist")
+include(":feature:product_list")
+include(":core:common")
+include(":core:ui")
+include(":core:network")
+include(":core:database")
