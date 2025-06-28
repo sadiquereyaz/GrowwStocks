@@ -45,6 +45,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // serialization
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.navigation.compose)
+//    implementation(libs.androidx.navigation.runtime.ktx)
 
 }

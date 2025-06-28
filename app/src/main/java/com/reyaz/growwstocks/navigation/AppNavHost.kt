@@ -1,12 +1,16 @@
 package com.reyaz.growwstocks.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
-import com.reyaz.core.common.Route
+import com.reyaz.core.common.navigation.Route
+import com.reyaz.feature.home.presentation.HomeScreen
+import com.reyaz.feature.home.presentation.HomeViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavHost(
@@ -14,14 +18,25 @@ fun AppNavHost(
     navController: NavHostController,
 ) {
     NavHost(
+        modifier =  modifier,
         startDestination = Route.Home,
         navController = navController,
     ) {
         composable<Route.Home> {
-//            HomeScreen(
-//                onNavigateToWatchlist = { navController.navigate(Route.Watchlist) },
-//                onNavigateToDetails = { id, name -> navController.navigate(Route.Details(id, name)) }
-//            )
+            val viewModel : HomeViewModel = koinViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            HomeScreen(
+                uiState = uiState,
+                navigateToList = { navController.navigate(Route.StockList(title = it)) },
+                navigateToDetail = { id, name ->
+                    navController.navigate(
+                        Route.Detail(
+                            id = id,
+                            title = name
+                        )
+                    )
+                }
+            )
         }
 
         composable<Route.Watchlist> {
