@@ -10,11 +10,11 @@ import com.reyaz.core.database.StockEntity
 @Dao
 interface GrowwDao {
 
+    @Query("SELECT * FROM stocks ORDER BY ticker ASC")
+    fun pagingSource(): PagingSource<Int, StockEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(stocks: List<StockEntity>)
-
-    @Query("SELECT * FROM stocks")
-    fun pagingSource(): PagingSource<Int, StockEntity>
 
     @Query("DELETE FROM stocks")
     suspend fun clearAll()

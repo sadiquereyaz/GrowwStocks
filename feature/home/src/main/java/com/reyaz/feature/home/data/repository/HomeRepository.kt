@@ -1,31 +1,30 @@
 package com.reyaz.feature.home.data.repository
 
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import com.reyaz.core.common.Resource
+import androidx.room.withTransaction
 import com.reyaz.core.database.GrowwDatabase
 import com.reyaz.core.database.StockEntity
-import com.reyaz.core.network.data.paging.StockRemoteMediator
+import com.reyaz.core.network.data.paging.StocksRemoteRepository
 import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
 import com.reyaz.core.network.data.remote.api.OverviewApiService
-import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    fun getPagedStocks(query: String): Flow<PagingData<StockEntity>>
+    //    fun getPagedStocks(query: String): Flow<PagingData<StockEntity>>
+    fun getPagedStocks(): Pager<Int, StockEntity>
+    suspend fun refreshStocks()
 }
 
 private const val TAG = "HOME_REPOSITORY_IMPL"
 
-class HomeRepositoryImpl(
+/*class HomeRepositoryImpl(
     private val alphaVantageApiService: AlphaVantageApiService,
     private val overviewApiService: OverviewApiService,
     private val db: GrowwDatabase
 ) :
     HomeRepository {
 
-    /*override suspend fun fetchTopGainerLoser(): Flow<Resource<Unit>> = flow {
+    override suspend fun fetchTopGainerLoser(): Flow<Resource<Unit>> = flow {
         try {
             emit(Resource.Loading(message = "Loading top gainers and losers"))
             val response = alphaVantageApiService.fetchTopGainersLosers()
@@ -41,14 +40,14 @@ class HomeRepositoryImpl(
             Log.e(TAG, "fetchTopGainerLoser: ", e)
             emit(Resource.Error(e.message))
         }
-    }*/
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getPagedStocks(query: String): Flow<PagingData<StockEntity>> {
         val pagingSourceFactory = { db.growwDao().pagingSource() }
 
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(pageSize =20),
             remoteMediator = StockRemoteMediator(
                 db,
                 alphaVantageApiService,
@@ -59,4 +58,21 @@ class HomeRepositoryImpl(
         ).flow
     }
 
+}*/
+
+class HomeRepositoryImpl(
+    private val db: GrowwDatabase,
+    private val stocksRemoteRepository: StocksRemoteRepository
+): HomeRepository {
+
+    override fun getPagedStocks(): Pager<Int, StockEntity> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = { db.growwDao().pagingSource() }
+        )
+    }
+
+    override suspend fun refreshStocks() {
+        stocksRemoteRepository.refreshStocks()
+    }
 }

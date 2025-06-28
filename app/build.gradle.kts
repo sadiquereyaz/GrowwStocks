@@ -77,4 +77,8 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.core.coroutines)
 
+    // paging 3
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
+
 }

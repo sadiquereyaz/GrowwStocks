@@ -1,85 +1,85 @@
 package com.reyaz.core.network.data.remote.dto
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 
 @Serializable
 data class CompanyOverviewResponse(
-    @SerialName("companyName")
+    @SerializedName("companyName")
     val companyName: String? = null,
-    @SerialName("image")
+    @SerializedName("image")
     val image: String? = null,
-    @SerialName("symbol")
+    @SerializedName("symbol")
     val symbol: String? = null,
 
 /*
-    @SerialName("address")
+    @SerializedName("address")
     val address: String? = null,
-    @SerialName("beta")
+    @SerializedName("beta")
     val beta: Int? = null,
-    @SerialName("ceo")
+    @SerializedName("ceo")
     val ceo: String? = null,
-    @SerialName("changes")
+    @SerializedName("changes")
     val changes: Double? = null,
-    @SerialName("cik")
+    @SerializedName("cik")
     val cik: String? = null,
-    @SerialName("city")
+    @SerializedName("city")
     val city: String? = null,
 
-    @SerialName("country")
+    @SerializedName("country")
     val country: String? = null,
-    @SerialName("currency")
+    @SerializedName("currency")
     val currency: String? = null,
-    @SerialName("cusip")
+    @SerializedName("cusip")
     val cusip: Any? = null,
-    @SerialName("dcf")
+    @SerializedName("dcf")
     val dcf: Int? = null,
-    @SerialName("dcfDiff")
+    @SerializedName("dcfDiff")
     val dcfDiff: Any? = null,
-    @SerialName("defaultImage")
+    @SerializedName("defaultImage")
     val defaultImage: Boolean? = null,
-    @SerialName("description")
+    @SerializedName("description")
     val description: String? = null,
-    @SerialName("exchange")
+    @SerializedName("exchange")
     val exchange: String? = null,
-    @SerialName("exchangeShortName")
+    @SerializedName("exchangeShortName")
     val exchangeShortName: String? = null,
-    @SerialName("fullTimeEmployees")
+    @SerializedName("fullTimeEmployees")
     val fullTimeEmployees: Any? = null,
-    @SerialName("industry")
+    @SerializedName("industry")
     val industry: String? = null,
-    @SerialName("ipoDate")
+    @SerializedName("ipoDate")
     val ipoDate: String? = null,
-    @SerialName("isActivelyTrading")
+    @SerializedName("isActivelyTrading")
     val isActivelyTrading: Boolean? = null,
-    @SerialName("isAdr")
+    @SerializedName("isAdr")
     val isAdr: Boolean? = null,
-    @SerialName("isEtf")
+    @SerializedName("isEtf")
     val isEtf: Boolean? = null,
-    @SerialName("isFund")
+    @SerializedName("isFund")
     val isFund: Boolean? = null,
-    @SerialName("isin")
+    @SerializedName("isin")
     val isin: String? = null,
-    @SerialName("lastDiv")
+    @SerializedName("lastDiv")
     val lastDiv: Int? = null,
-    @SerialName("mktCap")
+    @SerializedName("mktCap")
     val mktCap: Int? = null,
-    @SerialName("phone")
+    @SerializedName("phone")
     val phone: String? = null,
-    @SerialName("price")
+    @SerializedName("price")
     val price: Double? = null,
-    @SerialName("range")
+    @SerializedName("range")
     val range: String? = null,
-    @SerialName("sector")
+    @SerializedName("sector")
     val sector: String? = null,
-    @SerialName("state")
+    @SerializedName("state")
     val state: Any? = null,
-    @SerialName("volAvg")
+    @SerializedName("volAvg")
     val volAvg: Int? = null,
-    @SerialName("website")
+    @SerializedName("website")
     val website: String? = null,
-    @SerialName("zip")
+    @SerializedName("zip")
     val zip: String? = null
 */
 )

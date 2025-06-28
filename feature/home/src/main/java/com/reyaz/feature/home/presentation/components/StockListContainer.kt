@@ -2,36 +2,43 @@ package com.reyaz.feature.home.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.reyaz.core.common.model.StockType
-import com.reyaz.feature.home.domain.Stock
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
+import com.reyaz.core.database.StockEntity
 
 @Composable
 fun StockListContainer(
     modifier: Modifier = Modifier,
     heading: String,
-    list: List<Stock>,
+    list: LazyPagingItems<StockEntity>,
     onItemClick: (Int, String) -> Unit,
     navigateToStockList: () -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(16.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(4.dp, 0.dp ,4.dp, 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp, 0.dp, 4.dp, 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -41,16 +48,46 @@ fun StockListContainer(
                 modifier = Modifier.clickable { navigateToStockList() }
             )      // todo: underline
         }
-        LazyVerticalGrid(
+
+        var count = 0
+        while (list.itemCount > count) {
+            Row {
+                StockItem(
+                    stock = list[count++] ?: StockEntity("UBL", "UBL", "0.0", "0.0", "0.0", "0.0"),
+                    onItemClick = { /*onItemClick(it.id, it.name ?: "Groww")*/ }
+                )
+                if (count < list.itemCount)
+                    StockItem(
+                        stock = list[count++] ?: StockEntity(
+                            "UBL",
+                            "UBL",
+                            "0.0",
+                            "0.0",
+                            "0.0",
+                            "0.0"
+                        ),
+                        onItemClick = { /*onItemClick(it.id, it.name ?: "Groww")*/ }
+                    )
+            }
+
+        }
+        /*LazyVerticalGrid(
             modifier = modifier,
             columns = GridCells.Adaptive(180.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            userScrollEnabled = false
+//            userScrollEnabled = false
         ) {
-            items(list) {
-                StockItem(stock = it, onItemClick = { onItemClick(it.id, it.name ?: "Groww") })
+            items(
+                count = list.itemCount,
+                key = list.itemKey { it.ticker },
+                contentType = list.itemContentType { "contentType" }
+            ) { index ->
+                val item = list[index]
+                StockItem(
+                    stock = item ?: StockEntity("UBL", "UBL", "0.0", "0.0", "0.0", "0.0"),
+                    onItemClick = { *//*onItemClick(it.id, it.name ?: "Groww")*//* })
             }
-        }
+        }*/
     }
 }

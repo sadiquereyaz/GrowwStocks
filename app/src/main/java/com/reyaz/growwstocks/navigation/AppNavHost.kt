@@ -1,5 +1,7 @@
 package com.reyaz.growwstocks.navigation
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -7,6 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.reyaz.core.common.navigation.Route
 import com.reyaz.feature.home.presentation.HomeScreen
 import com.reyaz.feature.home.presentation.HomeViewModel
@@ -25,8 +28,10 @@ fun AppNavHost(
         composable<Route.Home> {
             val viewModel : HomeViewModel = koinViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val stocks = viewModel.pagedStocks.collectAsLazyPagingItems()
             HomeScreen(
                 uiState = uiState,
+                stocks = stocks,
                 navigateToList = { navController.navigate(Route.StockList(title = it)) },
                 navigateToDetail = { id, name ->
                     navController.navigate(
@@ -35,7 +40,8 @@ fun AppNavHost(
                             title = name
                         )
                     )
-                }
+                },
+                onRefresh = { viewModel.refreshStocks() }
             )
         }
 

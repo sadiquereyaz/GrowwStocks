@@ -24,7 +24,7 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    val pagedStocks = repository.getPagedStocks("")
+    val pagedStocks = repository.getPagedStocks().flow
         .cachedIn(viewModelScope)
 
     /*    var isSearchActive by mutableStateOf(false)
@@ -38,6 +38,22 @@ class HomeViewModel(
 
     fun onSearchIconClicked() {
         updateState { it.copy(isSearchActive = true) }
+    }
+init {
+    //refreshStocks()
+}
+    fun refreshStocks() {
+        viewModelScope.launch {
+            updateState { it.copy(isRefreshing = true) }
+            try {
+                //repository.refreshStocks()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                updateState { it.copy(isRefreshing = false) }
+
+            }
+        }
     }
 
     fun onSearchQueryChanged(query: String) {

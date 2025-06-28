@@ -1,32 +1,32 @@
 package com.reyaz.core.network.data.remote.dto
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class GainerLoserResponse(
-    @SerialName("last_updated")
+    @SerializedName("last_updated")
     val lastUpdated: String? = null,
-    @SerialName("metadata")
+    @SerializedName("metadata")
     val metadata: String? = null,
-    @SerialName("top_gainers")
+    @SerializedName("top_gainers")
     val topGainers: List<Stock?>? = null,
-    @SerialName("top_losers")
+    @SerializedName("top_losers")
     val topLosers: List<Stock?>? = null
 )
 
 
 @Serializable
 data class Stock(
-    @SerialName("change_amount")
+    @SerializedName("change_amount")
     val changeAmount: String? = null,
-    @SerialName("change_percentage")
+    @SerializedName("change_percentage")
     val changePercentage: String? = null,
-    @SerialName("price")
+    @SerializedName("price")
     val price: String? = null,
-    @SerialName("ticker")
+    @SerializedName("ticker")
     val ticker: String? = null,
-    @SerialName("volume")
+    @SerializedName("volume")
     val volume: String? = null
 )
 
