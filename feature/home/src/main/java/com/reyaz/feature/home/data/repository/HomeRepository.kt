@@ -2,17 +2,18 @@ package com.reyaz.feature.home.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.room.withTransaction
+import com.reyaz.core.common.Resource
+import com.reyaz.core.common.model.StockType
 import com.reyaz.core.database.GrowwDatabase
 import com.reyaz.core.database.StockEntity
 import com.reyaz.core.network.data.paging.StocksRemoteRepository
-import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
-import com.reyaz.core.network.data.remote.api.OverviewApiService
+import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     //    fun getPagedStocks(query: String): Flow<PagingData<StockEntity>>
     fun getPagedStocks(): Pager<Int, StockEntity>
-    suspend fun refreshStocks()
+    suspend fun refreshStocks(): Flow<Resource<Unit>>
+    suspend fun getTopGainerLoser(stockType: StockType): Flow<List<StockEntity>>
 }
 
 private const val TAG = "HOME_REPOSITORY_IMPL"
@@ -63,16 +64,18 @@ private const val TAG = "HOME_REPOSITORY_IMPL"
 class HomeRepositoryImpl(
     private val db: GrowwDatabase,
     private val stocksRemoteRepository: StocksRemoteRepository
-): HomeRepository {
+) : HomeRepository {
 
     override fun getPagedStocks(): Pager<Int, StockEntity> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(pageSize = 10),
             pagingSourceFactory = { db.growwDao().pagingSource() }
         )
     }
 
-    override suspend fun refreshStocks() {
+    override suspend fun refreshStocks(): Flow<Resource<Unit>> =
         stocksRemoteRepository.refreshStocks()
-    }
+
+    override suspend fun getTopGainerLoser(stockType: StockType): Flow<List<StockEntity>> = stocksRemoteRepository.fetchTop(stockType)
+
 }

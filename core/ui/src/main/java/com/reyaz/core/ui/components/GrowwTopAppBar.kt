@@ -22,7 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.fragment.app.FragmentManager.BackStackEntry
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -53,14 +55,17 @@ fun GrowwTopAppBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Image(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.groww_logo),
-                    contentDescription = "Groww Logo",
-                    modifier = Modifier.size(32.dp)
-                )
+                if (currentDestination?.isTopLevel() == true)
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.groww_logo),
+                        contentDescription = "Groww Logo",
+                        modifier = Modifier.size(32.dp)
+                    )
                 Text(
                     text = navBackStackEntry?.arguments?.getString("title") ?: "Groww Stocks",
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         },

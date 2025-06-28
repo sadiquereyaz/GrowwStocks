@@ -55,7 +55,7 @@ fun HomeScreen(
                     onItemClick = { id, name -> navigateToDetail(id, name) },
                     navigateToStockList = { navigateToList("Top Gainers") },
                     heading = "Top Gainers",
-                    list = stocks
+                    list = uiState.topGainer
                 )
             }
 
@@ -65,7 +65,7 @@ fun HomeScreen(
                     onItemClick = { id, name -> navigateToDetail(id, name) },
                     navigateToStockList = { navigateToList("Top Losers") },
                     heading = "Top Losers",
-                    list = stocks
+                    list = uiState.topLoser
                 )
             }
         }

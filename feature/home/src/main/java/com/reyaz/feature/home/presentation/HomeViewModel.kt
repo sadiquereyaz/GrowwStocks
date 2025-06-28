@@ -1,20 +1,18 @@
 package com.reyaz.feature.home.presentation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.reyaz.core.common.Resource
 import com.reyaz.core.common.model.StockType
 import com.reyaz.feature.home.data.repository.HomeRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+
+private const val TAG = "HOME_VIEW_MODEL"
 
 class HomeViewModel(
     private val repository: HomeRepository,
@@ -39,20 +37,70 @@ class HomeViewModel(
     fun onSearchIconClicked() {
         updateState { it.copy(isSearchActive = true) }
     }
-init {
-    //refreshStocks()
-}
-    fun refreshStocks() {
+
+    init {
+        getTopStocks()
+    }
+
+    fun refreshStocks(showRefreshIndicator: Boolean = true) {
         viewModelScope.launch {
-            updateState { it.copy(isRefreshing = true) }
+            updateState { it.copy(isRefreshing = showRefreshIndicator) }
             try {
-                //repository.refreshStocks()
+                repository.refreshStocks().collect { resource ->
+                    Log.d(TAG, "refreshStocks: $resource")
+                    when (resource) {
+                        is Resource.Loading -> {
+                            updateState { it.copy(isRefreshing = true, error = null) }
+                        }
+
+                        is Resource.Success -> {
+                            updateState {
+                                it.copy(
+                                    isRefreshing = false,
+                                    isLoading = false,
+                                    error = null
+                                )
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            updateState {
+                                it.copy(
+                                    isRefreshing = false,
+                                    isLoading = false,
+                                    error = it.error
+                                )
+                            }
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
                 updateState { it.copy(isRefreshing = false) }
-
             }
+        }
+    }
+
+    private fun getTopStocks() {
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true) }
+            launch {
+                repository.getTopGainerLoser(StockType.UP).collect { topGainers ->
+                    updateState { it.copy(topGainer = topGainers) }
+                }
+            }
+            launch {
+                repository.getTopGainerLoser(StockType.DOWN).collect { topLosers ->
+                    updateState { it.copy(topLoser = topLosers) }
+                }
+            }
+            delay(1000)
+            if (uiState.value.topGainer.isEmpty() && uiState.value.topLoser.isEmpty()) {
+                Log.d(TAG, "Refreshing...")
+                refreshStocks(showRefreshIndicator = false)
+            }
+            updateState { it.copy(isLoading = false) }
         }
     }
 

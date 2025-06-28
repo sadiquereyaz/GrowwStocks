@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -40,7 +41,7 @@ fun StockItem(
     onItemClick: () -> Unit
 ) {
     CustomCard(
-        modifier = modifier.aspectRatio(10 / 9f),
+        modifier = modifier.aspectRatio(12 / 9f),
         onClick = { onItemClick.invoke() }
     ) {
         Column(
@@ -57,7 +58,7 @@ fun StockItem(
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.groww_logo),
-                    error = painterResource(R.drawable.groww_logo), //todo: change error image into gray tint
+                    error = painterResource(R.drawable.groww_placeholder), //todo: change error image into gray tint
                     contentDescription = "company logo",
                     contentScale = ContentScale.Crop,
 //                    modifier = Modifier.clip(CircleShape),
@@ -87,7 +88,7 @@ fun StockItem(
 //                    text = stock.percentChange.toUpDownPriceWithPercentChange(stock.type, stock.price),
                     text = stock.changeAmount ?: "no",
                     fontSize = 12.sp,
-//                    color = stock.type.color,
+                    color = stock.type?.color ?: Color.Unspecified,
                     lineHeight = 2.sp,
                     fontWeight = FontWeight.SemiBold
                 )
