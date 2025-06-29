@@ -23,7 +23,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.reyaz.core.common.R
 import com.reyaz.core.common.model.StockType
-import com.reyaz.core.database.StockEntity
+import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.core.ui.components.CustomCard
 import com.reyaz.core.ui.theme.extendedColorScheme
 import java.util.Locale
@@ -80,7 +80,7 @@ fun StockItem(
                 )
                 // change price and percent
                 Text(
-                    text = "${stock.changeAmount} (${stock.changePercentage})",
+                    text = "${stock.changeAmount} (${stock.changePercentage}%)",
                     fontSize = 12.sp,
                     color = if (stock.type == StockType.UP) MaterialTheme.extendedColorScheme.gainerColor else MaterialTheme.extendedColorScheme.loserColor,
                     lineHeight = 2.sp,

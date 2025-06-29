@@ -1,6 +1,6 @@
 package com.reyaz.feature.home.presentation
 
-import com.reyaz.core.database.StockEntity
+import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.feature.home.domain.Stock
 
 data class HomeUiState(

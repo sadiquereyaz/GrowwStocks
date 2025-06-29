@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.reyaz.core.database.StockEntity
+import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.core.ui.components.DottedUnderlineText
 
 @Composable
@@ -100,7 +100,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.reyaz.core.database.StockEntity
+import com.reyaz.core.database.entity.StockEntity
 
 @Composable
 fun StockListContainer(

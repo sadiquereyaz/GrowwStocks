@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.room.withTransaction
 import com.reyaz.core.common.Resource
 import com.reyaz.core.common.model.StockType
+import com.reyaz.core.common.utils.TypeConversion
 import com.reyaz.core.database.GrowwDatabase
-import com.reyaz.core.database.StockEntity
+import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
 import com.reyaz.core.network.data.remote.api.OverviewApiService
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToLong
 
 private const val TAG = "STOCKS_REMOTE_REPOSITORY"
 
@@ -23,7 +25,8 @@ class StocksRemoteRepository(
     private val alphaVantageApiService: AlphaVantageApiService,
     private val overviewApiService: OverviewApiService
 ) {
-    suspend fun fetchTop(type: StockType) = withContext(Dispatchers.IO) { db.growwDao().getTopGainersLosers(type) }
+    suspend fun fetchTop(type: StockType) =
+        withContext(Dispatchers.IO) { db.growwDao().getTopGainersLosers(type) }
 
     fun refreshStocks(): Flow<Resource<Unit>> = flow {
         try {
@@ -43,9 +46,19 @@ class StocksRemoteRepository(
                                         val (name, url) = nameAndUrl.getOrNull()!!
                                         StockEntity(
                                             ticker = ticker,
-                                            price = dto.price,
-                                            changeAmount = dto.changeAmount,
-                                            changePercentage = dto.changePercentage,
+                                            price = dto.price?.let {
+                                                TypeConversion.roundOffString(
+                                                    decimalString = it
+                                                )
+                                            },
+                                            changeAmount = dto.changeAmount?.let {
+                                                TypeConversion.roundOffString(
+                                                    decimalString = it
+                                                )},
+                                            changePercentage = dto.changePercentage?.let {
+                                                TypeConversion.roundOffString(
+                                                    decimalString = it
+                                                )},
                                             createdOn = time,
                                             type = StockType.UP,
                                             name = name,
@@ -57,20 +70,28 @@ class StocksRemoteRepository(
                         }.mapNotNull { it.await() }
                     }
 
-
-                    val topLosers = coroutineScope{
-
-                            it.topLosers.orEmpty().mapNotNull { dto ->
-                                async{ dto?.ticker?.let {
+                    val topLosers = coroutineScope {
+                        it.topLosers.orEmpty().mapNotNull { dto ->
+                            async {
+                                dto?.ticker?.let { ticker ->
                                     val time = System.currentTimeMillis()
-                                    val nameAndUrl = fetchNameAndUrl(it)
+                                    val nameAndUrl = fetchNameAndUrl(ticker)
                                     if (nameAndUrl.isSuccess) {
                                         val (name, url) = nameAndUrl.getOrNull()!!
                                         StockEntity(
-                                            ticker = it,
-                                            price = dto.price,
-                                            changeAmount = dto.changeAmount,
-                                            changePercentage = dto.changePercentage,
+                                            ticker = ticker,
+                                            price = dto.price?.let {
+                                                TypeConversion.roundOffString(
+                                                    decimalString = it
+                                                )},
+                                            changeAmount = dto.changeAmount?.let {
+                                                TypeConversion.roundOffString(
+                                                    decimalString = it
+                                                )},
+                                            changePercentage = dto.changePercentage?.let {
+                                                TypeConversion.roundOffString(
+                                                    decimalString = it
+                                                )},
                                             type = StockType.DOWN,
                                             createdOn = time,
                                             name = name,

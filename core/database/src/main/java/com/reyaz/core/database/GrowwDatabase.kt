@@ -1,16 +1,15 @@
 package com.reyaz.core.database
 
 import androidx.room.Database
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import androidx.room.RoomDatabase
-import com.reyaz.core.common.model.StockType
 import com.reyaz.core.database.dao.RemoteKeysDao
 import com.reyaz.core.database.dao.GrowwDao
+import com.reyaz.core.database.entity.RemoteKeys
+import com.reyaz.core.database.entity.StockEntity
 
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [StockEntity::class, RemoteKeys::class]
 )
 abstract class GrowwDatabase : RoomDatabase() {
@@ -20,23 +19,3 @@ abstract class GrowwDatabase : RoomDatabase() {
          const val DATABASE_NAME = "groww_database"
     }
 }
-
-
-@Entity(tableName = "stocks")
-data class StockEntity(
-    @PrimaryKey val ticker: String,
-    val name: String? = null,
-    val price: String?,
-    val changeAmount: String?,
-    val changePercentage: String?,
-    val url: String? = null,
-    val type: StockType?,
-    val createdOn: Long
-)
-
-@Entity(tableName = "remote_keys")
-data class RemoteKeys(
-    @PrimaryKey val ticker: String,
-    val prevKey: Int?,
-    val nextKey: Int?
-)

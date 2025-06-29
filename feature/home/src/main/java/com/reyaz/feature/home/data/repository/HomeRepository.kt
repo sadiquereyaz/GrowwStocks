@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import com.reyaz.core.common.Resource
 import com.reyaz.core.common.model.StockType
 import com.reyaz.core.database.GrowwDatabase
-import com.reyaz.core.database.StockEntity
+import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.core.network.data.paging.StocksRemoteRepository
 import kotlinx.coroutines.flow.Flow
 

@@ -1,21 +1,16 @@
 package com.reyaz.feature.home.presentation
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.reyaz.core.common.model.StockType
-import com.reyaz.core.database.StockEntity
-import com.reyaz.feature.home.domain.Stock
+import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.feature.home.presentation.components.StockListContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
