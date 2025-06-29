@@ -9,6 +9,6 @@ import org.koin.dsl.module
 val stockListModule = module {
 
     single<StockListRepository>{ StockListRepositoryImpl(get()) }
-    viewModel { StockListViewModel(get()) }
+    viewModel { StockListViewModel(get(), get()) }
     
 }

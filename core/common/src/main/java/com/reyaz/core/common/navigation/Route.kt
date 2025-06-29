@@ -12,7 +12,7 @@ sealed interface Route {
     data object Watchlist : Route
 
     @Serializable
-    data class StockList(val title: String) : Route
+    data class StockList(val type: Int, val title: String) : Route
 
     @Serializable
     data class Detail(val title: String, val id: String) : Route

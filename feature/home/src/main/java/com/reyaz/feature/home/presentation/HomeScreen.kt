@@ -8,6 +8,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.reyaz.core.common.model.StockType
 import com.reyaz.feature.home.presentation.components.StockListContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -15,7 +16,7 @@ import com.reyaz.feature.home.presentation.components.StockListContainer
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToDetail: (String, String) -> Unit,
-    navigateToList: (String) -> Unit,
+    navigateToList: (Int, String) -> Unit,
     uiState: HomeUiState,
     onRefresh: () -> Unit
 ) {
@@ -35,7 +36,7 @@ fun HomeScreen(
                         StockListContainer(
                             modifier = Modifier,
                             onItemClick = { id, name -> navigateToDetail(id, name) },
-                            navigateToStockList = { navigateToList("Top Gainers") },
+                            navigateToStockList = { navigateToList(StockType.UP.ordinal, "Top Gainers") },
                             heading = "Top Gainers",
                             list = uiState.topGainer
                         )
@@ -45,7 +46,7 @@ fun HomeScreen(
                         StockListContainer(
                             modifier = Modifier,
                             onItemClick = { id, name -> navigateToDetail(id, name) },
-                            navigateToStockList = { navigateToList("Top Losers") },
+                            navigateToStockList = { navigateToList(StockType.DOWN.ordinal, "Top Losers") },
                             heading = "Top Losers",
                             list = uiState.topLoser
                         )

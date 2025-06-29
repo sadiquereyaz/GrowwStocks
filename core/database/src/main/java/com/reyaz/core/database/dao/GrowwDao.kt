@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GrowwDao {
 
-    @Query("SELECT * FROM stocks ORDER BY ticker ASC")
-    fun pagingSource(): PagingSource<Int, StockEntity>
+    @Query("SELECT * FROM stocks WHERE type = :type ORDER BY createdOn ASC")
+    fun pagingSource(type: StockType): PagingSource<Int, StockEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(stocks: List<StockEntity>)

@@ -32,7 +32,8 @@ fun DottedUnderlineText(
         fontSize = 12.sp,
         lineHeight = 1.sp,
         modifier = modifier
-            .clickable {  onClick?.invoke() }.drawBehind {
+            .clickable {  onClick?.invoke() }   // todo: add padding and curves
+            .drawBehind {
             val strokeWidthPx = underlineThickness.toPx()
             val y = size.height
             drawLine(

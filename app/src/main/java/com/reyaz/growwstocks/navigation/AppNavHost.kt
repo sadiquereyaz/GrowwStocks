@@ -30,7 +30,7 @@ fun AppNavHost(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             HomeScreen(
                 uiState = uiState,
-                navigateToList = { navController.navigate(Route.StockList(title = it)) },
+                navigateToList = {typeIndex, title-> navController.navigate(Route.StockList(type = typeIndex, title = title)) },
                 navigateToDetail = { id, name ->
                     navController.navigate(
                         Route.Detail(
