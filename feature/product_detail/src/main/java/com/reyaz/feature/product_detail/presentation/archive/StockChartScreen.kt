@@ -33,7 +33,6 @@ fun StockChartScreen(uiState: StockDetailUiState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
             .padding(16.dp)
     ) {
         when (val data = uiState.stockData) {
@@ -77,14 +76,13 @@ fun StockChartScreen(uiState: StockDetailUiState) {
                 // Stock Info Header
                 Text(
                     text = "Torrent Pharmaceuticals",
-                    color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
                 
                 Text(
                     text = ChartDataConverter.formatPrice(currentPrice),
-                    color = Color.White,
+//                    color = Color.White,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -148,7 +146,7 @@ fun PeriodSelector(
             ) {
                 Text(
                     text = label,
-                    color = if (isSelected) Color.Black else Color.White
+//                    color = if (isSelected) Color.Black else Color.White
                 )
             }
         }
