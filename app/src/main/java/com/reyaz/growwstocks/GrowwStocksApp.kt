@@ -16,7 +16,8 @@ import com.reyaz.growwstocks.navigation.AppNavHost
 @Composable
 fun GrowwStocksApp(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    onDarkModeChange: () -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
@@ -30,6 +31,7 @@ fun GrowwStocksApp(
                 onSaveClick = {},
                 navBackStackEntry = navBackStackEntry,
                 currentDestination = currentDestination,
+                onDarkModeChange = onDarkModeChange
             )
         },
         bottomBar = {
@@ -37,7 +39,7 @@ fun GrowwStocksApp(
                 navController = navController,
                 currentDestination = currentDestination
             )
-        }
+        },
     ) { innerPadding ->
         AppNavHost(
             navController = navController,

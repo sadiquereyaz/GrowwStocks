@@ -39,7 +39,7 @@ fun AppNavHost(
                         )
                     )
                 },
-                onRefresh = { viewModel.refreshStocks(false) }
+                onRefresh = { viewModel.refreshStocks(true) }
             )
         }
 

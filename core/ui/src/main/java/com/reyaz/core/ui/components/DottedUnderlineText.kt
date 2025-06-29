@@ -14,16 +14,17 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.reyaz.core.ui.theme.extendedColorScheme
 
 @Composable
 fun DottedUnderlineText(
-    text: String,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
+    text: String,
+    color: Color = MaterialTheme.extendedColorScheme.brandColor,
     underlineColor: Color = color,
     underlineThickness: Dp = 1.dp,
     dashLength: Float = 8f,
-    gapLength: Float = 4f,
+    gapLength: Float = 6f,
     onClick: (() -> Unit)? = null
 ) {
     Text(

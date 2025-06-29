@@ -1,4 +1,5 @@
 package com.reyaz.core.ui.theme
+
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -7,13 +8,18 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 @Immutable
 data class ExtendedColorScheme(
-    val brandColor: ColorFamily,
+    val brandColor: Color = Color.Unspecified,
+    val gainerColor: Color = Color.Unspecified,
+    val loserColor: Color = Color.Unspecified,
 )
 
 private val lightScheme = lightColorScheme(
@@ -92,57 +98,51 @@ private val darkScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
-val extendedLight = ExtendedColorScheme(
-  brandColor = ColorFamily(
-  brandColorLight,
-  onBrandColorLight,
-  brandColorContainerLight,
-  onBrandColorContainerLight,
-  ),
+private val extendedLightScheme = ExtendedColorScheme(
+    brandColor = brandColorLight,
+    loserColor = loserColorLight,
+    gainerColor = gainerColorLight,
 )
 
-val extendedDark = ExtendedColorScheme(
-  brandColor = ColorFamily(
-  brandColorDark,
-  onBrandColorDark,
-  brandColorContainerDark,
-  onBrandColorContainerDark,
-  ),
+private val extendedDarkScheme = ExtendedColorScheme(
+    brandColor = brandColorDark,
+    loserColor = loserColorDark,
+    gainerColor = gainerColorDark,
 )
 
-@Immutable
-data class ColorFamily(
-    val color: Color,
-    val onColor: Color,
-    val colorContainer: Color,
-    val onColorContainer: Color
-)
-
-val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
-)
+val LocalExtendedColorScheme = staticCompositionLocalOf { ExtendedColorScheme() }
 
 @Composable
 fun GrowwStocksTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable() () -> Unit
 ) {
-  val colorScheme = when {
-      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-          val context = LocalContext.current
-          if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-      }
-      
-      darkTheme -> darkScheme
-      else -> lightScheme
-  }
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
 
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = Typography,
-    content = content
-  )
+        darkTheme -> darkScheme
+        else -> lightScheme
+    }
+
+    val extendedColorScheme = if (darkTheme) extendedDarkScheme else extendedLightScheme
+
+    CompositionLocalProvider(
+        LocalExtendedColorScheme provides extendedColorScheme
+    ) {
+        // Apply the standard MaterialTheme with the determined color scheme and typography
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography, // Assuming Typography is defined elsewhere
+            content = content
+        )
+    }
 }
 
+val MaterialTheme.extendedColorScheme: ExtendedColorScheme
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalExtendedColorScheme.current

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<style name="Theme.SplashScreen.Splash" parent="Theme.SplashScreen">-->
+    <style name="Theme.SplashScreen.Splash" parent="Theme.SplashScreen.IconBackground">    <!--use this when you want icon background color-->
+        <item name="android:windowBackground">@color/black</item>
+        <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated
+        drawable. One of these is required. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/groww_logo</item>
+        <!--<item name="windowSplashScreenIconBackgroundColor">@color/white</item>-->      <!--use this when you want icon background color-->
+
+        <!-- Set the theme of the Activity that directly follows your splash
+   screen. This is required. -->
+        <item name="postSplashScreenTheme">@style/Theme.GrowwStocks</item>
+    </style>
+</resources>
