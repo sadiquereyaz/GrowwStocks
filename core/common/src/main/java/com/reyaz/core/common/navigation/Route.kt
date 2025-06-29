@@ -1,7 +1,6 @@
 package com.reyaz.core.common.navigation
 
 import kotlinx.serialization.Serializable
-import com.reyaz.core.common.model.StockType
 
 sealed interface Route {
 
@@ -15,6 +14,6 @@ sealed interface Route {
     data class StockList(val type: Int, val title: String) : Route
 
     @Serializable
-    data class Detail(val title: String, val id: String) : Route
+    data class StockDetail(val title: String, val id: String) : Route
 
 }

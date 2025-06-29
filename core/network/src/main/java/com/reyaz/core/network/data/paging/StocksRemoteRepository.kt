@@ -3,7 +3,6 @@ package com.reyaz.core.network.data.paging
 import android.util.Log
 import androidx.room.withTransaction
 import com.reyaz.core.common.Resource
-import com.reyaz.core.common.model.Stock
 import com.reyaz.core.common.model.StockType
 import com.reyaz.core.common.utils.TypeConvertor
 import com.reyaz.core.database.GrowwDatabase
@@ -11,6 +10,7 @@ import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
 import com.reyaz.core.network.data.remote.api.OverviewApiService
 import com.reyaz.core.network.data.remote.dto.StockDto
+import com.reyaz.core.network.domain.MonthlyAdjusted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -59,6 +59,31 @@ class StocksRemoteRepository(
             emit(Resource.Error(e.message ?: "Failed to fetch top gainers and losers"))
         }
     }.flowOn(Dispatchers.IO)
+
+  /*  fun fetchStockPrices(symbol: String): Flow<Resource<List<MonthlyAdjusted>>> = flow {
+        *//*emit(Resource.Loading())
+        try {
+            val response = alphaVantageApiService.getMonthlyAdjusted(symbol = symbol)
+            if (response.isSuccessful) {
+                val body = response.body()
+                val timeSeries = body?.getAsJsonObject("Monthly Adjusted Time Series")
+                val prices = timeSeries?.entrySet()?.map {
+                    val date = it.key
+                    val adjustedClose = it.value.asJsonObject["5. adjusted close"].asFloat
+                    MonthlyAdjusted(date, adjustedClose)
+                }?.sortedBy { it.date } ?: emptyList()
+
+//                dao.clear()
+//                dao.insertAll(prices.map { StockPriceEntity.fromDomain(it) })
+                emit(Resource.Success(prices))
+            } else {
+                emit(Resource.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage ?: "Unknown error"))
+//            dao.getAll().map { list -> list.map { it.toDomain() } }.collect { emit(Resource.Success(it)) }
+        }*//*
+    }.flowOn(Dispatchers.IO)*/
 
     private suspend fun buildTopStockEntities(
         stockDtoList: List<StockDto?>,

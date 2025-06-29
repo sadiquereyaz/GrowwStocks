@@ -2,15 +2,17 @@ package com.reyaz.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.reyaz.core.common.model.Stock
 import com.reyaz.core.database.dao.RemoteKeysDao
 import com.reyaz.core.database.dao.GrowwDao
+import com.reyaz.core.database.entity.DailyPrice
 import com.reyaz.core.database.entity.RemoteKeys
 import com.reyaz.core.database.entity.StockEntity
 
 
 @Database(
-    version = 5,
-    entities = [StockEntity::class, RemoteKeys::class]
+    version = 6,
+    entities = [StockEntity::class, RemoteKeys::class, DailyPrice::class]
 )
 abstract class GrowwDatabase : RoomDatabase() {
     abstract fun growwDao(): GrowwDao

@@ -52,7 +52,9 @@ dependencies {
 
     // retrofit
     implementation(libs.retrofit)
+    // convertors
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.converter.moshi)
 
     // koin
     implementation(libs.koin.core)
@@ -67,5 +69,6 @@ dependencies {
 //    implementation(libs.androidx.room.ktx)
 //    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
+
 
 }

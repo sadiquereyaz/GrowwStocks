@@ -24,8 +24,5 @@ class StockListViewModel(
         repository.getPagedStocks(type = StockType.entries[stockTypeIndex]).cachedIn(viewModelScope)
 
     fun refreshStocks(showRefreshIcon: Boolean) {
-
     }
-
-
 }

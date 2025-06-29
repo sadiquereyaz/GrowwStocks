@@ -11,6 +11,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.reyaz.core.common.navigation.Route
 import com.reyaz.feature.home.presentation.HomeScreen
 import com.reyaz.feature.home.presentation.HomeViewModel
+import com.reyaz.feature.product_detail.presentation.StockDetailViewModel
+import com.reyaz.feature.product_detail.presentation.archive.StockChartScreen
 import com.reyaz.feature.product_list.presentation.StockListScreen
 import com.reyaz.feature.product_list.presentation.StockListViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -22,7 +24,10 @@ fun AppNavHost(
 ) {
     NavHost(
         modifier =  modifier,
-        startDestination = Route.Home,
+        startDestination = Route.
+//                Home
+        StockDetail("", "")
+        ,
         navController = navController,
     ) {
         composable<Route.Home> {
@@ -33,7 +38,7 @@ fun AppNavHost(
                 navigateToList = {typeIndex, title-> navController.navigate(Route.StockList(type = typeIndex, title = title)) },
                 navigateToDetail = { id, name ->
                     navController.navigate(
-                        Route.Detail(
+                        Route.StockDetail(
                             id = id,
                             title = name
                         )
@@ -51,7 +56,7 @@ fun AppNavHost(
                 stocks = stocks,
                 navigateToDetail = { id, name ->
                     navController.navigate(
-                        Route.Detail(
+                        Route.StockDetail(
                             id = id,
                             title = name
                         )
@@ -65,13 +70,22 @@ fun AppNavHost(
 //            WatchlistScreen(onNavigateBack = { navController.popBackStack() })
         }
 
-        composable<Route.Detail> { backStackEntry ->
-//            val detailsRoute = backStackEntry.toRoute<Route.Detail>()
-//            DetailsScreen(
-//                id = detailsRoute.id,
-//                name = detailsRoute.name,
-//                onNavigateBack = { navController.popBackStack() }
-//            )
+        composable<Route.StockDetail> { backStackEntry ->
+           /* val detailsRoute = backStackEntry.toRoute<Route.StockDetail>()
+            val viewModel : StockDetailViewModel = koinViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            StockDetailScreen(
+                uiState = uiState,
+                onEvent = viewModel::onEvent,
+            )*/
+
+//            StockGraphScreen()
+            val viewModel: StockDetailViewModel = koinViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            StockChartScreen(
+                uiState = uiState,
+//                onEvent = viewModel::onEvent,
+            )
         }
     }
 }

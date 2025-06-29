@@ -5,7 +5,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.reyaz.core.common.Resource
 import com.reyaz.core.common.model.StockType
+import com.reyaz.core.database.entity.DailyPrice
 import com.reyaz.core.database.entity.StockEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +25,10 @@ interface GrowwDao {
 
     @Query("SELECT * FROM stocks WHERE type = :stockType ORDER BY createdOn ASC LIMIT(4)")
     fun getTopGainersLosers(stockType: StockType) : Flow<List<StockEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllStockDetail(stock: List<DailyPrice>)
+
+    @Query("SELECT * FROM DAILYPRICE ORDER BY date DESC")
+    suspend fun getStockDetail(): List<DailyPrice>
 }
