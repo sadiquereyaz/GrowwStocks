@@ -1,5 +1,4 @@
-/*
-package com.reyaz.feature.home.presentation.components
+package com.reyaz.core.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,17 +22,15 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.reyaz.core.common.R
+import com.reyaz.core.common.model.Stock
 import com.reyaz.core.common.model.StockType
-import com.reyaz.core.database.entity.StockEntity
-import com.reyaz.core.ui.components.CustomCard
 import com.reyaz.core.ui.theme.extendedColorScheme
-import java.util.Locale
 
 
 @Composable
 fun StockItem(
     modifier: Modifier = Modifier,
-    stock: StockEntity,
+    stock: Stock,
     onItemClick: () -> Unit
 ) {
     CustomCard(
@@ -90,4 +87,4 @@ fun StockItem(
             }
         }
     }
-}*/
+}

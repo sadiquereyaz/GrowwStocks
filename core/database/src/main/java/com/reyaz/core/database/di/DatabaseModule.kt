@@ -9,4 +9,6 @@ val databaseModule = module {
     single { Room.databaseBuilder(context = get(), klass = GrowwDatabase::class.java, name = DATABASE_NAME)
         .fallbackToDestructiveMigration(true)
         .build() }
+
+    single { get<GrowwDatabase>().growwDao() }
 }

@@ -41,6 +41,8 @@ dependencies {
 //    implementation(libs.androidx.paging.compose)
 
     implementation(project(":core:ui"))
+    implementation(project(":core:database"))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -66,4 +68,9 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.core.coroutines)
+
+    // paging 3
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.room.paging)
 }

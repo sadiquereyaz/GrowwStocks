@@ -1,14 +1,13 @@
 package com.reyaz.feature.home.presentation
 
-import com.reyaz.core.database.entity.StockEntity
-import com.reyaz.feature.home.domain.Stock
+import com.reyaz.core.common.model.Stock
 
 data class HomeUiState(
     val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,
     val error : String? = null,
-    val topGainer: List<StockEntity> = emptyList(),
-    val topLoser: List<StockEntity> = emptyList(),
+    val topGainer: List<Stock> = emptyList(),
+    val topLoser: List<Stock> = emptyList(),
 
     val isSearchActive: Boolean = false,
     val searchQuery: String = "",

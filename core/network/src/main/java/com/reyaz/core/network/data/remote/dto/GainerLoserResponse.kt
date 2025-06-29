@@ -10,14 +10,14 @@ data class GainerLoserResponse(
     @SerializedName("metadata")
     val metadata: String? = null,
     @SerializedName("top_gainers")
-    val topGainers: List<Stock?>? = null,
+    val topGainers: List<StockDto?>? = null,
     @SerializedName("top_losers")
-    val topLosers: List<Stock?>? = null
+    val topLosers: List<StockDto?>? = null
 )
 
 
 @Serializable
-data class Stock(
+data class StockDto(
     @SerializedName("change_amount")
     val changeAmount: String? = null,
     @SerializedName("change_percentage")

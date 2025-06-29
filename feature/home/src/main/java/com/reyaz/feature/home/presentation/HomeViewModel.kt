@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.reyaz.core.common.Resource
 import com.reyaz.core.common.model.StockType
-import com.reyaz.feature.home.data.repository.HomeRepository
+import com.reyaz.feature.home.domain.repository.HomeRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,9 +21,6 @@ class HomeViewModel(
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
-
-    val pagedStocks = repository.getPagedStocks().flow
-        .cachedIn(viewModelScope)
 
     /*    var isSearchActive by mutableStateOf(false)
             private set

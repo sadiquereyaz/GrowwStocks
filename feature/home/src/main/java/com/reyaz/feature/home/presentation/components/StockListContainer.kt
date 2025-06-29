@@ -14,15 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.reyaz.core.database.entity.StockEntity
+import com.reyaz.core.common.model.Stock
 import com.reyaz.core.ui.components.DottedUnderlineText
+import com.reyaz.core.ui.components.StockItem
 
 @Composable
 fun StockListContainer(
     modifier: Modifier = Modifier,
     heading: String,
-    list: List<StockEntity>,
-    onItemClick: (Int, String) -> Unit,
+    list: List<Stock>,
+    onItemClick: (String, String) -> Unit,
     navigateToStockList: () -> Unit
 ) {
     Column(
@@ -62,7 +63,7 @@ fun StockListContainer(
                         Box(modifier = Modifier.weight(1f)) {
                             StockItem(
                                 stock = stock,
-                                onItemClick = { onItemClick(0, stock.name ?: "Groww") }
+                                onItemClick = { onItemClick(stock.ticker, stock.name ?: "Groww") }
                             )
                         }
                     }

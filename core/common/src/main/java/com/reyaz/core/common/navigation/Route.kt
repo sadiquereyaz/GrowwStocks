@@ -15,6 +15,6 @@ sealed interface Route {
     data class StockList(val title: String) : Route
 
     @Serializable
-    data class Detail(val title: String, val id: Int) : Route
+    data class Detail(val title: String, val id: String) : Route
 
 }

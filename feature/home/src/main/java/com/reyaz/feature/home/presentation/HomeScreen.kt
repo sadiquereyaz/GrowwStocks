@@ -8,19 +8,15 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
-import com.reyaz.core.database.entity.StockEntity
 import com.reyaz.feature.home.presentation.components.StockListContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navigateToDetail: (Int, String) -> Unit,
+    navigateToDetail: (String, String) -> Unit,
     navigateToList: (String) -> Unit,
     uiState: HomeUiState,
-    stocks: LazyPagingItems<StockEntity>,
     onRefresh: () -> Unit
 ) {
     PullToRefreshBox(
@@ -34,21 +30,6 @@ fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                stocks.apply {
-                    when {
-                        loadState.refresh is LoadState.Loading -> { /* Initial loading UI */
-                        }
-
-                        loadState.append is LoadState.Loading -> { /* Pagination loading UI */
-                        }
-
-                        loadState.refresh is LoadState.Error -> { /* Error UI */
-                        }
-
-                        loadState.append is LoadState.Error -> { /* Pagination error UI */
-                        }
-                    }
-                }
                 if (uiState.topGainer.isNotEmpty())
                     item {
                         StockListContainer(

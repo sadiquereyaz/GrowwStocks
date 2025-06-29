@@ -9,12 +9,12 @@ import com.reyaz.core.database.entity.StockEntity
 
 
 @Database(
-    version = 3,
+    version = 5,
     entities = [StockEntity::class, RemoteKeys::class]
 )
 abstract class GrowwDatabase : RoomDatabase() {
     abstract fun growwDao(): GrowwDao
-    abstract fun remoteKeysDao(): RemoteKeysDao
+    abstract fun remoteKeysDao(): RemoteKeysDao // todo
     companion object {
          const val DATABASE_NAME = "groww_database"
     }

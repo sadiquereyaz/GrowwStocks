@@ -55,4 +55,13 @@ dependencies {
     // compose navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
+
+    // coil
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
+
+    // paging 3
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.room.paging)
 }
