@@ -102,10 +102,10 @@ To use the Alpha Vantage API:
    API Configuration
    The app requires API keys for both services. Add them to your gradle.properties file:
    
-    ALPHA_VINTAGE_API_KEY="UXACHVZSJ7HMDYSE"
+    ALPHA_VINTAGE_API_KEY="actual_api_key"
     ALPHA_VINTAGE_BASE_URL="https://www.alphavantage.co/"
 
-    OVERVIEW_API_KEY="mvJ7qVVjPbe4M0J4bXTVr8QOIiXDmMtH"
+    OVERVIEW_API_KEY="actual_api_key"
     OVERVIEW_BASE_URL="https://financialmodelingprep.com/"
 
 ```
