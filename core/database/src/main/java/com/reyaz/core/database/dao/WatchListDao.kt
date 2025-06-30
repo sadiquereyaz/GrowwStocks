@@ -4,8 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.reyaz.core.common.navigation.Route
 import com.reyaz.core.database.entity.watchlist.WatchlistEntity
 import com.reyaz.core.database.entity.watchlist.WatchlistStockCrossRef
+import com.reyaz.core.database.entity.watchlist.WatchlistStockEntity
 import com.reyaz.core.database.entity.watchlist.WatchlistWithStockPresence
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +21,11 @@ interface WatchListDao {
     ON w.watchlistId = ws.watchlistId AND ws.ticker = :ticker
     ORDER BY w.name ASC
 """)
-    suspend fun getAllWatchlistsWithStockPresence(ticker: String): List<WatchlistWithStockPresence>
+    suspend fun getWatchlistsWithStockPresence(ticker: String): List<WatchlistWithStockPresence>
+
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertStock(stock: WatchlistStockEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addStockToWatchlist(crossRef: WatchlistStockCrossRef)
@@ -32,4 +38,16 @@ interface WatchListDao {
 
     @Query("SELECT * FROM watchlists ORDER BY createdAt DESC")
     fun getAllWatchlists(): Flow<List<WatchlistEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWatchlist(watchlist: WatchlistEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCrossRef(crossRef: WatchlistStockCrossRef)
+
+    @Query("""
+        DELETE FROM watchlist_stock_cross_ref
+        WHERE watchlistId = :watchlistId AND ticker = :ticker
+    """)
+    suspend fun deleteCrossRef(watchlistId: Long, ticker: String)
 }

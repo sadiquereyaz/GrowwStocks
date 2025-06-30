@@ -28,8 +28,8 @@ fun AppNavHost(
         modifier = modifier,
         startDestination =
 //            Route.Home,
-//        StockDetail("", "")
-        Route.AllWatchlist()
+            Route.StockDetailRoute("dummy title", "ticker titel", "$100.3")
+//        Route.AllWatchlist()
                 ,
 
         navController = navController,
@@ -49,9 +49,10 @@ fun AppNavHost(
                 },
                 navigateToDetail = { id, name ->
                     navController.navigate(
-                        Route.StockDetail(
-                            id = id,
-                            title = name
+                        Route.StockDetailRoute(
+                            ticker = id,
+                            title = name,
+                            price = "$43"
                         )
                     )
                 },
@@ -67,8 +68,9 @@ fun AppNavHost(
                 stocks = stocks,
                 navigateToDetail = { id, name ->
                     navController.navigate(
-                        Route.StockDetail(
-                            id = id,
+                        Route.StockDetailRoute(
+                            ticker = id,
+                            price = "$43",
                             title = name
                         )
                     )
@@ -81,7 +83,7 @@ fun AppNavHost(
             AllWatchlistsScreen(
                 onWatchlistClick = { id, name ->
                     navController.navigate(
-                        Route.WatchlistStocks(
+                        Route.WatchlistStocksRoute(
                             watchlistId = id,
                             title = name
                         )
@@ -89,12 +91,13 @@ fun AppNavHost(
                 }
             )
         }
-        composable<Route.WatchlistStocks> {
+        composable<Route.WatchlistStocksRoute> {
             WatchlistStocksScreen(
                 navigateToDetail = { id, name ->
                     navController.navigate(
-                        Route.StockDetail(
-                            id = id,
+                        Route.StockDetailRoute(
+                            ticker = id,
+                            price = "$43",
                             title = name
                         )
                     )
@@ -102,7 +105,7 @@ fun AppNavHost(
             )
         }
 
-        composable<Route.StockDetail> { backStackEntry ->
+        composable<Route.StockDetailRoute> { backStackEntry ->
             /* val detailsRoute = backStackEntry.toRoute<Route.StockDetail>()
              val viewModel : StockDetailViewModel = koinViewModel()
              val uiState by viewModel.uiState.collectAsStateWithLifecycle()

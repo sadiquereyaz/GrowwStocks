@@ -15,7 +15,7 @@ import androidx.room.Index
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = StockEntity::class,
+            entity = WatchlistStockEntity::class,
             parentColumns = ["ticker"],
             childColumns = ["ticker"],
             onDelete = ForeignKey.CASCADE

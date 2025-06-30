@@ -33,7 +33,7 @@ fun AllWatchlistsScreen(
             }
         }
         is WatchlistUiState.Success -> {
-            val watchlists = (uiState as WatchlistUiState.Success).watchlists
+            val watchlists = (uiState as WatchlistUiState.Success).allWatchlist
             LazyColumn(
                 modifier = modifier
                     .fillMaxSize()

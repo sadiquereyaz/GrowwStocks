@@ -31,7 +31,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
             is AppBarEvent.UpdateSearchQuery -> updateSearchQuery(event.query)
             AppBarEvent.ClearSearch -> clearSearch()
 
-            AppBarEvent.ToggleBookmarks -> toggleBookmarks()
+            AppBarEvent.ToggleBottomSheet -> toggleBottomSheet()
             AppBarEvent.ShowBookmarks -> showBookmarks()
             AppBarEvent.HideBookmarks -> hideBookmarks()
 
@@ -86,7 +86,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
                 // Opening search - close bookmarks if open
                 currentState.copy(
                     isSearchActive = true,
-                    showBookmarks = false
+                    isBottomSheetVisible = false
                 )
             }
         }
@@ -96,7 +96,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
         _uiState.update {
             it.copy(
                 isSearchActive = true,
-                showBookmarks = false
+                isBottomSheetVisible = false
             )
         }
     }
@@ -122,18 +122,13 @@ class MainViewModel (private val themeRepository: ThemeRepository
         }
     }
 
-    // Bookmark functions
-    fun toggleBookmarks() {
+    private fun toggleBottomSheet() {
         _uiState.update { currentState ->
-            if (currentState.showBookmarks) {
-                // Closing bookmarks
-                currentState.copy(showBookmarks = false)
+            if (currentState.isBottomSheetVisible) {
+                currentState.copy(isBottomSheetVisible = false)
             } else {
-                // Opening bookmarks - close search if active
                 currentState.copy(
-                    showBookmarks = true,
-                    isSearchActive = false,
-                    searchQuery = ""
+                    isBottomSheetVisible = true,
                 )
             }
         }
@@ -142,7 +137,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
     fun showBookmarks() {
         _uiState.update {
             it.copy(
-                showBookmarks = true,
+                isBottomSheetVisible = true,
                 isSearchActive = false,
                 searchQuery = ""
             )
@@ -151,7 +146,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
 
     fun hideBookmarks() {
         _uiState.update {
-            it.copy(showBookmarks = false)
+            it.copy(isBottomSheetVisible = false)
         }
     }
 
@@ -160,7 +155,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
         _uiState.update {
             it.copy(
                 isSearchActive = false,
-                showBookmarks = false,
+                isBottomSheetVisible = false,
                 searchQuery = ""
             )
         }

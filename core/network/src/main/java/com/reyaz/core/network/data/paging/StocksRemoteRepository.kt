@@ -97,16 +97,18 @@ class StocksRemoteRepository(
                         if (nameAndUrl.isSuccess) {
                             val (name, url) = nameAndUrl.getOrNull()!!
 
-                            StockTable(
-                                ticker = ticker,
-                                price = dto.price?.let { TypeConvertor.roundOffString(it) },
-                                changeAmount = dto.changeAmount?.let { TypeConvertor.roundOffString(it) },
-                                changePercentage = dto.changePercentage?.let { TypeConvertor.roundOffString(it) },
-                                createdOn = time,
-                                type = type,
-                                name = name,
-                                url = url
-                            )
+                            if (name != null) {
+                                StockTable(
+                                    ticker = ticker,
+                                    price = dto.price?.let { TypeConvertor.roundOffString(it) },
+                                    changeAmount = dto.changeAmount?.let { TypeConvertor.roundOffString(it) },
+                                    changePercentage = dto.changePercentage?.let { TypeConvertor.roundOffString(it) },
+                                    createdOn = time,
+                                    type = type,
+                                    name = name,
+                                    url = url
+                                )
+                            } else null
                         } else null
                     }
                 }

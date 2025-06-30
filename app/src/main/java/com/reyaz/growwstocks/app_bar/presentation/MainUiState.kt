@@ -7,6 +7,7 @@ data class MainUiState(
     val isThemeLoaded: Boolean = false,
     val isSearchActive: Boolean = false,
     val searchQuery: String = "",
-    val showBookmarks: Boolean = false,
-    val isLoading: Boolean = false
+    val isBookMarked: Boolean = false,
+    val isBottomSheetVisible: Boolean = false,
+    val isLoading: Boolean = false,
 )

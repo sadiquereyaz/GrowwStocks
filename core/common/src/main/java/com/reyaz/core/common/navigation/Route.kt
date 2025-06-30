@@ -11,12 +11,12 @@ sealed interface Route {
     data class AllWatchlist(val title: String = "Watchlist") : Route
 
     @Serializable
-    data class WatchlistStocks(val title: String, val watchlistId: Long) : Route
+    data class WatchlistStocksRoute(val title: String, val watchlistId: Long) : Route
 
     @Serializable
     data class StockList(val type: Int, val title: String) : Route
 
     @Serializable
-    data class StockDetail(val title: String, val id: String) : Route
+    data class StockDetailRoute(val title: String, val ticker: String, val price: String) : Route
 
 }

@@ -3,9 +3,10 @@ package com.reyaz.core.database.entity.watchlist
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "stocks")
-data class StockEntity(
+@Entity
+data class WatchlistStockEntity(
     @PrimaryKey val ticker: String,
     val name: String,
-    val price: Double
+    val price: String,
+    val url: String
 )

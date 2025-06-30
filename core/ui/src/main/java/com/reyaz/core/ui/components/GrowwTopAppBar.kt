@@ -53,7 +53,7 @@ fun GrowwTopAppBar(
     isInWatchlist: Boolean,
     navBackStackEntry: NavBackStackEntry?,
     currentDestination: NavDestination?,
-    onSaveClick: () -> Unit,
+    onBookMarkClick: () -> Unit,
     toggleTheme: () -> Unit,
     themeMode: ThemeMode,
 
@@ -181,10 +181,11 @@ fun GrowwTopAppBar(
                         )
                     }
 
+                    // bookmark
                     currentDestination?.let { destination ->
                         when {
-                            destination.hasRoute(Route.AllWatchlist::class) -> {
-                                IconButton(onClick = { onSaveClick() }) {
+                            destination.hasRoute(Route.StockDetailRoute::class) -> {
+                                IconButton(onClick = { onBookMarkClick() }) {
                                     Icon(
                                         imageVector = if (isInWatchlist)
                                             ImageVector.vectorResource(R.drawable.bookmark_added_filled_24px)

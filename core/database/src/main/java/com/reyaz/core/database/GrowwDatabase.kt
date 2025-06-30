@@ -8,19 +8,19 @@ import com.reyaz.core.database.dao.WatchListDao
 import com.reyaz.core.database.entity.DailyPrice
 import com.reyaz.core.database.entity.RemoteKeys
 import com.reyaz.core.database.entity.StockTable
-import com.reyaz.core.database.entity.watchlist.StockEntity
+import com.reyaz.core.database.entity.watchlist.WatchlistStockEntity
 import com.reyaz.core.database.entity.watchlist.WatchlistEntity
 import com.reyaz.core.database.entity.watchlist.WatchlistStockCrossRef
 
 
 @Database(
-    version = 7,
+    version = 9,
     entities = [
         RemoteKeys::class,
         DailyPrice::class,
         WatchlistEntity::class,
         StockTable::class,
-        StockEntity::class,
+        WatchlistStockEntity::class,
         WatchlistStockCrossRef::class]
 )
 abstract class GrowwDatabase : RoomDatabase() {

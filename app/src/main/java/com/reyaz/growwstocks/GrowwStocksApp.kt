@@ -1,5 +1,7 @@
 package com.reyaz.growwstocks
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,7 +16,22 @@ import com.reyaz.growwstocks.app_bar.presentation.AppBarEvent
 import com.reyaz.growwstocks.app_bar.presentation.MainUiState
 import com.reyaz.growwstocks.navigation.AppNavHost
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.reyaz.growwstocks.app_bar.presentation.WatchlistSelectionBottomSheet
+import com.reyaz.watchlist.presentation.WatchlistUiState
+import com.reyaz.watchlist.presentation.WatchlistViewModel
+import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GrowwStocksApp(
     modifier: Modifier = Modifier,
@@ -24,6 +41,8 @@ fun GrowwStocksApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -31,10 +50,13 @@ fun GrowwStocksApp(
             GrowwTopAppBar(
                 navController = navController,
                 onSearchClick = {},
-                isInWatchlist = true,
-                onSaveClick = {},
+
+                isInWatchlist = uiState.isBookMarked,
+                onBookMarkClick = { onEvent(AppBarEvent.ToggleBottomSheet) },
+
                 navBackStackEntry = navBackStackEntry,
                 currentDestination = currentDestination,
+
                 toggleTheme = { onEvent(AppBarEvent.ToggleTheme) },
                 themeMode = uiState.themeMode,
 
@@ -56,5 +78,44 @@ fun GrowwStocksApp(
             navController = navController,
             modifier = Modifier.padding(innerPadding)
         )
+        if (uiState.isBottomSheetVisible) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    onEvent(AppBarEvent.ToggleBottomSheet)
+                },
+            ) {
+                val viewModel: WatchlistViewModel = koinViewModel()
+                when (val watchlistUiState = viewModel.uiState.collectAsState().value) {
+                    is WatchlistUiState.Loading -> {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    is WatchlistUiState.Success -> {
+                        WatchlistSelectionBottomSheet(
+                            watchlists = watchlistUiState.watchlists,
+                            onToggleWatchlistChecked = { id, isChecked ->
+                                viewModel.onToggleWatchlistChecked(id, "ticker", isChecked)
+                            },
+                            onAddNewWatchlist = { name ->
+                                viewModel.onAddNewWatchlist("name", "ticker")
+                            }
+                        )
+                    }
+
+                    is WatchlistUiState.Error -> {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = watchlistUiState.message,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                }
+
+            }
+        }
+
     }
 }

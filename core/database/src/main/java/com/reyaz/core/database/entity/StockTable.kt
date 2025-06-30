@@ -6,8 +6,8 @@ import com.reyaz.core.common.model.StockType
 
 @Entity(tableName = "stocks_table")
 data class StockTable(
-    @PrimaryKey val ticker: String,
-    val name: String? = null,
+    val ticker: String,
+    @PrimaryKey val name: String,
     val price: Float?,
     val changeAmount: Float?,
     val changePercentage: Float?,

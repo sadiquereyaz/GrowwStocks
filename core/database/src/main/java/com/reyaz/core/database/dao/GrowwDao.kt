@@ -19,7 +19,7 @@ interface GrowwDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(stocks: List<StockTable>)
 
-    @Query("DELETE FROM stocks")
+    @Query("DELETE FROM WatchlistStockEntity")
     suspend fun clearAll()
 
     @Query("SELECT * FROM stocks_table WHERE type = :stockType ORDER BY createdOn ASC LIMIT(4)")

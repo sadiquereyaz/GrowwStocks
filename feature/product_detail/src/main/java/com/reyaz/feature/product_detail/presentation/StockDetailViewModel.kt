@@ -18,7 +18,7 @@ class StockDetailViewModel (
     val uiState = _uiState.asStateFlow()
 
     init {
-        loadStockData("TORNTPHARM.BSE", TimePeriod.FIVE_YEAR)
+        //loadStockData("TORNTPHARM.BSE", TimePeriod.FIVE_YEAR)
     }
     
     private fun loadStockData(symbol: String, period: TimePeriod = TimePeriod.FIVE_YEAR) {
