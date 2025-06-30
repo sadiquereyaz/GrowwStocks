@@ -1,3 +1,147 @@
+
+# GrowwStocks - Stock Market App
+
+A modern stock market application built for the Groww assignment, showcasing Android development best practices with Jetpack Compose, Clean Architecture, and modern Android libraries.
+
+## Features
+
+- **Stock Listings**: View top gainers and losers in the market
+- **Stock Details**: Detailed stock charts with historical data
+- **Watchlist**: Track your favorite stocks (coming soon)
+- **Dark/Light Theme**: Support for system theme and manual selection
+- **Search Functionality**: Find stocks quickly
+- **Pagination**: Efficient loading of stock data
+- **Splash Screen**: Branded launch experience
+
+## Tech Stack
+
+- **Jetpack Compose** for declarative UI
+- **Paging 3** for efficient data loading
+- **YCharts** for interactive stock charts
+- **Koin** for dependency injection
+- **Room Database** for local data persistence
+- **DataStore** for preferences storage
+- **Type-Safe** navigation using `@kotlinx-Serializable` library
+- **Retrofit** for network operations
+- **Clean Architecture** with feature modules
+
+## Multi-Modular Architecture
+
+The app follows Clean Architecture principles with clear separation of concerns:
+
+```
+app/ (Presentation Layer)
+├── di/
+├── navigation/
+└── app_bar/
+
+core/ (Domain Layer)
+├── common/
+├── database/
+├── network/
+└── ui/
+
+feature/ (Feature Modules)
+├── home/
+├── product_detail/
+├── product_list/
+└── watchlist/
+```
+
+## Screenshots
+
+| Home Screen | Stock List | Stock Detail |
+|-------------|------------|--------------|
+|![image](https://github.com/user-attachments/assets/8f51a6a2-f4cb-4309-b420-f4046ceea411) |![image](https://github.com/user-attachments/assets/73123deb-7873-455c-9485-43d54858ad7b) | ![image](https://github.com/user-attachments/assets/8442dd93-f0b8-420d-b1d3-2345d60494ac)
+|![image](https://github.com/user-attachments/assets/dd69318a-0b9d-4a0d-a553-c0f0bc16f1f9) |![image](https://github.com/user-attachments/assets/d0355c11-c8d1-400b-b987-86ba4cecb217) | ![image](https://github.com/user-attachments/assets/465ace57-d460-4071-bc24-eee8c5613564)
+
+## API Integration
+
+The app integrates with two financial APIs:
+
+1. **Alpha Vantage API**
+   - Used for: Historical stock price data and time series
+   - Base URL: `https://www.alphavantage.co/`
+   - Key Features:
+     - Daily/Weekly/Monthly adjusted prices
+     - Time series data for charts
+     - Global stock quotes
+
+2. **Financial Modeling Prep API**
+   - Used for: Company fundamentals and overview
+   - Base URL: `https://financialmodelingprep.com/`
+   - Key Features:
+     - Company profiles
+     - Financial ratios
+     - Key metrics and valuations
+
+## Getting Started
+
+### Prerequisites
+
+- Android Studio Giraffe or later
+- Android SDK 33+
+- Kotlin 1.9.0+
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/sadiquereyaz/growwstocks.git
+   ```
+2. Open the project in Android Studio
+3. Build and run the app
+
+### Configuration
+
+To use the Alpha Vantage API:
+
+1. Get an API key from [Alpha Vantage](https://www.alphavantage.co/)
+2. Add it to your `local.properties` file:
+   ```kotlin
+   API Configuration
+   The app requires API keys for both services. Add them to your gradle.properties file:
+   
+    ALPHA_VINTAGE_API_KEY="UXACHVZSJ7HMDYSE"
+    ALPHA_VINTAGE_BASE_URL="https://www.alphavantage.co/"
+
+    OVERVIEW_API_KEY="mvJ7qVVjPbe4M0J4bXTVr8QOIiXDmMtH"
+    OVERVIEW_BASE_URL="https://financialmodelingprep.com/"
+
+```
+```
+## Implementation Details
+
+### Key Components
+
+- **Theme Management**: Uses DataStore to persist user theme preferences
+- **Pagination**: Implements Paging 3 with Room and network integration
+- **Charting**: YCharts library for interactive stock price visualization
+- **Navigation**: Type-safe navigation with Compose Navigation
+- **Error Handling**: Resource wrapper for consistent state management
+
+### Challenges & Solutions
+
+1. **Stock Chart Performance**:
+   - Implemented efficient data conversion from API responses
+   - Used YCharts for smooth rendering of large datasets
+
+2. **Theme Persistence**:
+   - Created a ThemeRepository with DataStore
+   - Integrated with system dark mode settings
+
+3. **API Rate Limits**:
+   - Implemented caching with Room database
+   - Added error states and retry mechanisms
+
+## Future Improvements
+
+- [ ] Complete watchlist functionality
+- [ ] Add portfolio tracking
+- [ ] Implement stock news integration
+- [ ] Add more chart customization options
+- [ ] Improve error handling and empty states
+
 ```
 Directory structure:
 └── sadiquereyaz-growwstocks/
