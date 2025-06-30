@@ -9,7 +9,7 @@ data class StockDetailUiState(
     val isLoading: Boolean = true,
     val error: String? = null,
     val graphData: List<DailyPrice>? = null,
-    val logoUrl: String? = null,
+    var logoUrl: String? = null,
     val currentPeriod: TimePeriod = TimePeriod.FIVE_YEAR,
     val currentSymbol: String = "",
     val companyData: CompanyOverview? = null,

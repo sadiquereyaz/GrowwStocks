@@ -23,7 +23,7 @@ fun StockListContainer(
     modifier: Modifier = Modifier,
     heading: String,
     list: List<Stock>,
-    onItemClick: (String, String) -> Unit,
+    onItemClick: (String, String, String) -> Unit,
     navigateToStockList: () -> Unit
 ) {
     Column(
@@ -63,7 +63,7 @@ fun StockListContainer(
                         Box(modifier = Modifier.weight(1f)) {
                             StockItem(
                                 stock = stock,
-                                onItemClick = { onItemClick(stock.ticker, stock.name ?: "Groww") }
+                                onItemClick = { onItemClick(stock.ticker, stock.name ?: "Groww", stock.url ?: "",) }
                             )
                         }
                     }

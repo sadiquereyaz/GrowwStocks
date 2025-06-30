@@ -26,11 +26,13 @@ class StockDetailViewModel(
     private val url = stateHandle.get<String>("logoUrl")
 
     init {
+        Log.d(TAG, "url $url")
         loadStockData(symbol = ticker, TimePeriod.FIVE_YEAR)
         loadCompanyInfo(ticker)
 //        updateState {
 //            it.copy(isLoading = false)
 //        }
+        uiState.value.logoUrl = url
     }
 
     private fun loadCompanyInfo(ticker: String) {

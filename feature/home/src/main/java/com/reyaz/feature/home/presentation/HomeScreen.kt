@@ -15,7 +15,7 @@ import com.reyaz.feature.home.presentation.components.StockListContainer
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navigateToDetail: (String, String) -> Unit,
+    navigateToDetail: (String, String, String) -> Unit,
     navigateToList: (Int, String) -> Unit,
     uiState: HomeUiState,
     onRefresh: () -> Unit
@@ -35,7 +35,7 @@ fun HomeScreen(
                     item {
                         StockListContainer(
                             modifier = Modifier,
-                            onItemClick = { id, name -> navigateToDetail(id, name) },
+                            onItemClick = { id, name, url -> navigateToDetail(id, name, url) },
                             navigateToStockList = { navigateToList(StockType.UP.ordinal, "Top Gainers") },
                             heading = "Top Gainers",
                             list = uiState.topGainer
@@ -45,7 +45,7 @@ fun HomeScreen(
                     item {
                         StockListContainer(
                             modifier = Modifier,
-                            onItemClick = { id, name -> navigateToDetail(id, name) },
+                            onItemClick = { id, name, url -> navigateToDetail(id, name, url) },
                             navigateToStockList = { navigateToList(StockType.DOWN.ordinal, "Top Losers") },
                             heading = "Top Losers",
                             list = uiState.topLoser

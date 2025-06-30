@@ -47,12 +47,12 @@ fun AppNavHost(
                         )
                     )
                 },
-                navigateToDetail = { id, name ->
+                navigateToDetail = { id, name, url ->
                     navController.navigate(
                         Route.StockDetailRoute(
                             ticker = id,
                             title = name,
-//                            logoUrl = null
+                            logoUrl = url.ifEmpty { null }
                         )
                     )
                 },
