@@ -5,38 +5,70 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import com.reyaz.core.ui.theme.GrowwStocksTheme
-import kotlinx.coroutines.delay
+import com.reyaz.core.common.model.ThemeMode
+import com.reyaz.growwstocks.app_bar.presentation.AppBarEvent
+import com.reyaz.growwstocks.app_bar.presentation.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+    private val mainViewModel: MainViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
-
         enableEdgeToEdge()
 
-        // todo: implement splash properly
         splashScreen.setKeepOnScreenCondition {
-            //splashViewModel.isLoading.value
-            false
+            !mainViewModel.uiState.value.isThemeLoaded
         }
         setContent {
+            val systemInDarkTheme = isSystemInDarkTheme()
+            val uiState by mainViewModel.uiState.collectAsState()
 
-            // todo: add persistence initial mode manage status and navigation bar color according to theme
-            val ise = isSystemInDarkTheme()
-            var isDarkMode: Boolean? by rememberSaveable { mutableStateOf(null) }
+            val currentDarkMode = when (uiState.themeMode) {
+                ThemeMode.LIGHT -> false
+                ThemeMode.DARK -> true
+                ThemeMode.SYSTEM -> systemInDarkTheme
+            }
 
-            GrowwStocksTheme(
-                darkTheme = isDarkMode ?: ise
-            ) {
-                GrowwStocksApp(
-                    onDarkModeChange = { isDarkMode = !(isDarkMode ?: ise) }
-                )
+            SideEffect {
+                if (uiState.isThemeLoaded) {
+                    WindowCompat.getInsetsController(window, window.decorView).apply {
+                        isAppearanceLightStatusBars = !currentDarkMode
+                        isAppearanceLightNavigationBars = !currentDarkMode
+                    }
+                    if (uiState.themeMode == ThemeMode.SYSTEM) {
+                        mainViewModel.onEvent(
+                            AppBarEvent.SetThemeMode(
+                                if (currentDarkMode) ThemeMode.DARK else ThemeMode.LIGHT
+                            )
+                        )
+                    }
+                }
+            }
+
+            if (uiState.isThemeLoaded) {
+                GrowwStocksTheme(
+                    darkTheme = currentDarkMode
+                ) {
+                    GrowwStocksApp(
+                        uiState = uiState,
+                        onEvent = mainViewModel::onEvent,
+//                        onDarkModeChange = mainViewModel::toggleTheme,
+//                        isAppInDarkMode = uiState.themeMode == ThemeMode.DARK
+//                        onSearchToggle = mainViewModel::toggleSearch,
+//                        onSearchQueryChange = mainViewModel::updateSearchQuery,
+//                        onSearchClose = mainViewModel::deactivateSearch,
+//                        onBookmarkToggle = mainViewModel::toggleBookmarks,
+//                        onBookmarkClose = mainViewModel::hideBookmarks,
+//                        onCloseAllOverlays = mainViewModel::closeAllOverlays
+                    )
+                }
             }
         }
     }

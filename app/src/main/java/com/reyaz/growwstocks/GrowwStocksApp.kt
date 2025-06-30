@@ -11,13 +11,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.reyaz.core.ui.components.GrowwBottomNavBar
 import com.reyaz.core.ui.components.GrowwTopAppBar
+import com.reyaz.growwstocks.app_bar.presentation.AppBarEvent
+import com.reyaz.growwstocks.app_bar.presentation.MainUiState
 import com.reyaz.growwstocks.navigation.AppNavHost
 
 @Composable
 fun GrowwStocksApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    onDarkModeChange: () -> Unit
+    uiState: MainUiState,
+    onEvent: (AppBarEvent) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
@@ -31,7 +34,8 @@ fun GrowwStocksApp(
                 onSaveClick = {},
                 navBackStackEntry = navBackStackEntry,
                 currentDestination = currentDestination,
-                onDarkModeChange = onDarkModeChange
+                toggleTheme = { onEvent(AppBarEvent.ToggleTheme) },
+                themeMode = uiState.themeMode
             )
         },
         bottomBar = {

@@ -1,16 +1,12 @@
 package com.reyaz.core.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import com.reyaz.core.common.navigation.Route
 import com.reyaz.core.common.navigation.TopLevelDestination.Companion.isTopLevel
 import com.reyaz.core.common.R
+import com.reyaz.core.common.model.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +41,8 @@ fun GrowwTopAppBar(
     currentDestination: NavDestination?,
     onSaveClick: () -> Unit,
     onSearchClick: () -> Unit,
-    onDarkModeChange: () -> Unit,
+    toggleTheme: () -> Unit,
+    themeMode: ThemeMode,
 ) {
 
     TopAppBar(
@@ -79,11 +77,23 @@ fun GrowwTopAppBar(
             }
         },
         actions = {
+            // theme switcher
+            /*IconToggleButton(
+                checked = isAppInDarkMode,
+                onCheckedChange = {
+                    onDarkModeChange()
+                }
+            ) {
+                Icon(
+                    imageVector = if (isAppInDarkMode) ImageVector.vectorResource(R.drawable.outline_light_mode_24) else ImageVector.vectorResource(R.drawable.outline_dark_mode_24),
+                    contentDescription = "Dark Mode"
+                )
+            }*/
             IconButton(onClick = {
-                onDarkModeChange()
+                toggleTheme()
             }) {
                 Icon(
-                    imageVector = if (isSystemInDarkTheme()) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                    imageVector = if (themeMode == ThemeMode.DARK) ImageVector.vectorResource(R.drawable.outline_light_mode_24) else ImageVector.vectorResource(R.drawable.outline_dark_mode_24),
                     contentDescription = "Dark Mode"
                 )
             }
@@ -101,6 +111,7 @@ fun GrowwTopAppBar(
                         }
                     }
 
+                    // search icon
                     destination.hasRoute(Route.Home::class) -> {
                         IconButton(onClick = { onSearchClick() }) {
                             Icon(

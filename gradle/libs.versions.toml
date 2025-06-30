@@ -24,6 +24,7 @@ swiperefreshlayout = "1.2.0-beta01"
 coreSplashscreen = "1.0.1"
 ycharts = "2.1.0"
 runtimeLivedata = "1.8.3"
+datastore = "1.1.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,9 @@ converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.r
 # coil
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+
+#datastore
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 # koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
