@@ -10,6 +10,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,9 @@ fun AllWatchlistsScreen(
     viewModel: WatchlistViewModel = koinViewModel(),
     onWatchlistClick: (Long, String) -> Unit,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllWatchlists()
+    }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (uiState) {
@@ -36,15 +40,13 @@ fun AllWatchlistsScreen(
             val watchlists = (uiState as WatchlistUiState.Success).allWatchlist
             LazyColumn(
                 modifier = modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(vertical = 16.dp)
             ) {
                 items(watchlists) { watchlist ->
                     WatchlistItem(
                         watchlist = watchlist,
-                        onClick = { onWatchlistClick(watchlist.watchlistId, watchlist.name) }
+                        onClick = { onWatchlistClick(watchlist.watchlistId, watchlist.watchlistName) }
                     )
                     if (watchlist != watchlists.last())
                         HorizontalDivider()

@@ -18,11 +18,7 @@ class WatchlistViewModel(
     private val _uiState = MutableStateFlow<WatchlistUiState>(WatchlistUiState.Loading)
     val uiState: StateFlow<WatchlistUiState> = _uiState.asStateFlow()
 
-    init {
-        fetchAllWatchlists()
-    }
-
-    private fun fetchAllWatchlists() {
+    fun fetchAllWatchlists() {
         viewModelScope.launch {
             _uiState.value = WatchlistUiState.Loading
             try {
@@ -37,13 +33,13 @@ class WatchlistViewModel(
 
     fun loadWatchlistsForStock(ticker: String) {
         viewModelScope.launch {
-            /*repository.getWatchlistsWithStockPresence(ticker)
+            repository.getWatchlistsWithStockPresence(ticker)
                 .onSuccess { list ->
-                    _uiState.update { it.copy(watchlists = list, isLoading = false) }
+                    _uiState.value = WatchlistUiState.Success(watchlists = list)
                 }
                 .onFailure { e ->
-                    _uiState.update { it.copy(error = e.localizedMessage, isLoading = false) }
-                }*/
+                    _uiState.value = WatchlistUiState.Error(e.localizedMessage ?: "Unknown error")
+                }
         }
     }
 

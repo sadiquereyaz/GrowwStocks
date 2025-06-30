@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -85,6 +86,9 @@ fun GrowwStocksApp(
                 },
             ) {
                 val viewModel: WatchlistViewModel = koinViewModel()
+                LaunchedEffect(Unit) {
+                    viewModel.loadWatchlistsForStock("watchlistId")
+                }
                 when (val watchlistUiState = viewModel.uiState.collectAsState().value) {
                     is WatchlistUiState.Loading -> {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

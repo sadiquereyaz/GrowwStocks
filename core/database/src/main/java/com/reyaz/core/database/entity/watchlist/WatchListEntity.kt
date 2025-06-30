@@ -4,10 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "watchlists")
+@Entity
 data class WatchlistEntity(
     @PrimaryKey(autoGenerate = true) val watchlistId: Long = 0L,
-    val name: String,
+    val watchlistName: String,
     val createdAt: Long = System.currentTimeMillis()
 )
 

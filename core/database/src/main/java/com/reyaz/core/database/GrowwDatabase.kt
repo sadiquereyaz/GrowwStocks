@@ -14,7 +14,7 @@ import com.reyaz.core.database.entity.watchlist.WatchlistStockCrossRef
 
 
 @Database(
-    version = 9,
+    version = 10,
     entities = [
         RemoteKeys::class,
         DailyPrice::class,

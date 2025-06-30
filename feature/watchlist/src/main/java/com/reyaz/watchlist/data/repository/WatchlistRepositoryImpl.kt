@@ -32,19 +32,18 @@ class WatchlistRepositoryImpl(
 
     override suspend fun createWatchlist(name: String): Long =
         withContext(Dispatchers.IO) {
-            val watchlist = WatchlistEntity(name = name)
+            val watchlist = WatchlistEntity(watchlistName = name)
             dao.insertWatchlist(watchlist)
         }
 
     override suspend fun addStockToWatchlist(watchlistId: Long, ticker: String) =
         withContext(Dispatchers.IO) {
-            dao.insertCrossRef(WatchlistStockCrossRef(watchlistId, ticker))
+            dao.addStockToWatchlist(WatchlistStockCrossRef(watchlistId, ticker))
         }
 
     override suspend fun removeStockFromWatchlist(watchlistId: Long, ticker: String) =
         withContext(Dispatchers.IO) {
-            dao.deleteCrossRef(watchlistId, ticker)
-
+            dao.removeStockFromWatchlist(watchlistId, ticker)
 
         }
 }

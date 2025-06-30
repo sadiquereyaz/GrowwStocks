@@ -14,13 +14,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WatchListDao {
     @Query("""
-    SELECT w.watchlistId, w.name,
+    SELECT w.watchlistId, w.watchlistName,
     CASE WHEN ws.ticker IS NOT NULL THEN 1 ELSE 0 END AS isPresent
-    FROM watchlists w
-    LEFT JOIN watchlist_stock_cross_ref ws
+    FROM WatchlistEntity w
+    LEFT JOIN WatchlistStockCrossRef ws
     ON w.watchlistId = ws.watchlistId AND ws.ticker = :ticker
-    ORDER BY w.name ASC
+    ORDER BY w.watchlistName ASC
 """)
+
     suspend fun getWatchlistsWithStockPresence(ticker: String): List<WatchlistWithStockPresence>
 
 
@@ -31,23 +32,15 @@ interface WatchListDao {
     suspend fun addStockToWatchlist(crossRef: WatchlistStockCrossRef)
 
     @Query("""
-    DELETE FROM watchlist_stock_cross_ref
+    DELETE FROM WatchlistStockCrossRef
     WHERE watchlistId = :watchlistId AND ticker = :ticker
 """)
     suspend fun removeStockFromWatchlist(watchlistId: Long, ticker: String)
 
-    @Query("SELECT * FROM watchlists ORDER BY createdAt DESC")
+    @Query("SELECT * FROM WatchlistEntity ORDER BY createdAt DESC")
     fun getAllWatchlists(): Flow<List<WatchlistEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWatchlist(watchlist: WatchlistEntity): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCrossRef(crossRef: WatchlistStockCrossRef)
-
-    @Query("""
-        DELETE FROM watchlist_stock_cross_ref
-        WHERE watchlistId = :watchlistId AND ticker = :ticker
-    """)
-    suspend fun deleteCrossRef(watchlistId: Long, ticker: String)
 }

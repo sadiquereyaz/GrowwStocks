@@ -1,5 +1,6 @@
 package com.reyaz.growwstocks.app_bar.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,25 +22,26 @@ fun WatchlistSelectionItem(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Box(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.elevatedCardElevation(2.dp)
+//        shape = RoundedCornerShape(12.dp),
+//        elevation = CardDefaults.elevatedCardElevation(2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+//                .padding(12.dp)
+            ,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = watchlist.name,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
-            )
             Checkbox(
                 checked = watchlist.isPresent,
                 onCheckedChange = onCheckedChange
+            )
+            Text(
+                text = watchlist.watchlistName,
+//                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
             )
         }
     }
