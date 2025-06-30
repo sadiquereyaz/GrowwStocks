@@ -35,6 +35,8 @@ class StocksRemoteRepository(
                 throw Exception("Failed to fetch top gainers and losers")
             } else {
                 response.body()?.let { it ->
+                    if (it.apiLimitExceeded != null)
+                        throw Exception(it.apiLimitExceeded)
                     val topGainers = buildTopStockEntities(
                         stockDtoList = it.topGainers.orEmpty(),
                         type = StockType.UP

@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GainerLoserResponse(
+    @SerializedName("Information")
+    val apiLimitExceeded: String? = null,
     @SerializedName("last_updated")
     val lastUpdated: String? = null,
     @SerializedName("metadata")
@@ -13,10 +15,6 @@ data class GainerLoserResponse(
     val topGainers: List<StockDto?>? = null,
     @SerializedName("top_losers")
     val topLosers: List<StockDto?>? = null,
-
-    @SerializedName("Information")
-    val errorMessage: List<StockDto?>? = null
-
 )
 
 
