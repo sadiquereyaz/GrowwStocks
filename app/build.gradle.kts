@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:product_list"))
     implementation(project(":feature:product_detail"))
+    implementation(project(":feature:watchlist"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

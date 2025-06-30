@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.reyaz.core.common.model.StockType
 
-@Entity(tableName = "stocks")
-data class StockEntity(
+@Entity(tableName = "stocks_table")
+data class StockTable(
     @PrimaryKey val ticker: String,
     val name: String? = null,
     val price: Float?,

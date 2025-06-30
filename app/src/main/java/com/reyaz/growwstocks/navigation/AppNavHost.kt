@@ -1,24 +1,8 @@
 package com.reyaz.growwstocks.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,10 +11,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.reyaz.core.common.navigation.Route
 import com.reyaz.feature.home.presentation.HomeScreen
 import com.reyaz.feature.home.presentation.HomeViewModel
-import com.reyaz.feature.product_detail.presentation.StockDetailViewModel
 import com.reyaz.feature.product_detail.presentation.StockChartScreen
+import com.reyaz.feature.product_detail.presentation.StockDetailViewModel
 import com.reyaz.feature.product_list.presentation.StockListScreen
 import com.reyaz.feature.product_list.presentation.StockListViewModel
+import com.reyaz.watchlist.presentation.AllWatchlistsScreen
+import com.reyaz.watchlist.presentation.WatchlistStocksScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -40,8 +26,12 @@ fun AppNavHost(
 ) {
     NavHost(
         modifier = modifier,
-        startDestination = Route.Home,
+        startDestination =
+//            Route.Home,
 //        StockDetail("", "")
+        Route.AllWatchlist()
+                ,
+
         navController = navController,
     ) {
         composable<Route.Home> {
@@ -72,7 +62,7 @@ fun AppNavHost(
             val viewModel: StockListViewModel = koinViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val stocks = viewModel.pagedStocks.collectAsLazyPagingItems()
-            StockListScreen (
+            StockListScreen(
                 uiState = uiState,
                 stocks = stocks,
                 navigateToDetail = { id, name ->
@@ -87,8 +77,29 @@ fun AppNavHost(
             )
         }
 
-        composable<Route.Watchlist> {
-//            WatchlistScreen(onNavigateBack = { navController.popBackStack() })
+        composable<Route.AllWatchlist> {
+            AllWatchlistsScreen(
+                onWatchlistClick = { id, name ->
+                    navController.navigate(
+                        Route.WatchlistStocks(
+                            watchlistId = id,
+                            title = name
+                        )
+                    )
+                }
+            )
+        }
+        composable<Route.WatchlistStocks> {
+            WatchlistStocksScreen(
+                navigateToDetail = { id, name ->
+                    navController.navigate(
+                        Route.StockDetail(
+                            id = id,
+                            title = name
+                        )
+                    )
+                }
+            )
         }
 
         composable<Route.StockDetail> { backStackEntry ->
@@ -108,5 +119,8 @@ fun AppNavHost(
 //                onEvent = viewModel::onEvent,
             )
         }
+
+
     }
 }
+

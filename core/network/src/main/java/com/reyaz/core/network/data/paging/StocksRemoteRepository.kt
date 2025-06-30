@@ -6,11 +6,10 @@ import com.reyaz.core.common.Resource
 import com.reyaz.core.common.model.StockType
 import com.reyaz.core.common.utils.TypeConvertor
 import com.reyaz.core.database.GrowwDatabase
-import com.reyaz.core.database.entity.StockEntity
+import com.reyaz.core.database.entity.StockTable
 import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
 import com.reyaz.core.network.data.remote.api.OverviewApiService
 import com.reyaz.core.network.data.remote.dto.StockDto
-import com.reyaz.core.network.domain.MonthlyAdjusted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -88,7 +87,7 @@ class StocksRemoteRepository(
     private suspend fun buildTopStockEntities(
         stockDtoList: List<StockDto?>,
         type: StockType
-    ): List<StockEntity> = coroutineScope {
+    ): List<StockTable> = coroutineScope {
         stockDtoList.orEmpty()
             .mapNotNull { dto ->
                 async {
@@ -98,7 +97,7 @@ class StocksRemoteRepository(
                         if (nameAndUrl.isSuccess) {
                             val (name, url) = nameAndUrl.getOrNull()!!
 
-                            StockEntity(
+                            StockTable(
                                 ticker = ticker,
                                 price = dto.price?.let { TypeConvertor.roundOffString(it) },
                                 changeAmount = dto.changeAmount?.let { TypeConvertor.roundOffString(it) },

@@ -8,10 +8,10 @@ sealed interface Route {
     data object Home : Route
 
     @Serializable
-    data object Search : Route
+    data class AllWatchlist(val title: String = "Watchlist") : Route
 
     @Serializable
-    data object Watchlist : Route
+    data class WatchlistStocks(val title: String, val watchlistId: Long) : Route
 
     @Serializable
     data class StockList(val type: Int, val title: String) : Route

@@ -11,4 +11,5 @@ val databaseModule = module {
         .build() }
 
     single { get<GrowwDatabase>().growwDao() }
+    single { get<GrowwDatabase>().watchListDao() }
 }

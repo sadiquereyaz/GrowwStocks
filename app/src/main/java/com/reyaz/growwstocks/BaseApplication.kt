@@ -7,6 +7,7 @@ import com.reyaz.feature.home.di.homeModule
 import com.reyaz.feature.product_detail.di.stockDetailModule
 import com.reyaz.feature.product_list.di.stockListModule
 import com.reyaz.growwstocks.di.appBarModule
+import com.reyaz.watchlist.di.watchlistModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
@@ -16,7 +17,15 @@ class BaseApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@BaseApplication)
-            modules(databaseModule, homeModule, networkModule, stockListModule, stockDetailModule,appBarModule)
+            modules(
+                databaseModule,
+                homeModule,
+                networkModule,
+                stockListModule,
+                stockDetailModule,
+                appBarModule,
+                watchlistModule
+            )
         }
     }
 }
