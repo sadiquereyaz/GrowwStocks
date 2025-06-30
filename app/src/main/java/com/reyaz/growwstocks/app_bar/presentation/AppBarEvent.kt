@@ -4,11 +4,13 @@ import com.reyaz.core.common.model.ThemeMode
 sealed class AppBarEvent {
     data object ToggleTheme : AppBarEvent()
     data class SetThemeMode(val mode: ThemeMode) : AppBarEvent()
+
     data object ToggleSearch : AppBarEvent()
-    data object ActivateSearch : AppBarEvent()
-    data object DeactivateSearch : AppBarEvent()
     data class UpdateSearchQuery(val query: String) : AppBarEvent()
     data object ClearSearch : AppBarEvent()
+    data object ActivateSearch : AppBarEvent()
+    data object DeactivateSearch : AppBarEvent()
+
     data object ToggleBookmarks : AppBarEvent()
     data object ShowBookmarks : AppBarEvent()
     data object HideBookmarks : AppBarEvent()

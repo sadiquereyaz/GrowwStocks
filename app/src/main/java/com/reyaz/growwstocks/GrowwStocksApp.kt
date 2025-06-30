@@ -1,6 +1,5 @@
 package com.reyaz.growwstocks
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +13,7 @@ import com.reyaz.core.ui.components.GrowwTopAppBar
 import com.reyaz.growwstocks.app_bar.presentation.AppBarEvent
 import com.reyaz.growwstocks.app_bar.presentation.MainUiState
 import com.reyaz.growwstocks.navigation.AppNavHost
+import androidx.compose.foundation.layout.padding
 
 @Composable
 fun GrowwStocksApp(
@@ -24,25 +24,32 @@ fun GrowwStocksApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
+
     Scaffold(
         modifier = modifier,
         topBar = {
             GrowwTopAppBar(
                 navController = navController,
                 onSearchClick = {},
-                isSaved = true,
+                isInWatchlist = true,
                 onSaveClick = {},
                 navBackStackEntry = navBackStackEntry,
                 currentDestination = currentDestination,
                 toggleTheme = { onEvent(AppBarEvent.ToggleTheme) },
-                themeMode = uiState.themeMode
+                themeMode = uiState.themeMode,
+
+                searchQuery = uiState.searchQuery,
+                onSearchQueryChange = { onEvent(AppBarEvent.UpdateSearchQuery(it)) },
+                isSearchActive = uiState.isSearchActive,
+                toggleSearchActiveState = { onEvent(AppBarEvent.ToggleSearch) }
             )
         },
         bottomBar = {
-            GrowwBottomNavBar(
-                navController = navController,
-                currentDestination = currentDestination
-            )
+            if (!uiState.isSearchActive || uiState.searchQuery.isBlank())
+                GrowwBottomNavBar(
+                    navController = navController,
+                    currentDestination = currentDestination
+                )
         },
     ) { innerPadding ->
         AppNavHost(

@@ -1,19 +1,37 @@
 package com.reyaz.core.ui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,102 +49,170 @@ import com.reyaz.core.common.navigation.TopLevelDestination.Companion.isTopLevel
 import com.reyaz.core.common.R
 import com.reyaz.core.common.model.ThemeMode
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun GrowwTopAppBar(
     modifier: Modifier = Modifier,
     navController: NavController,
-    isSaved: Boolean,
+    isInWatchlist: Boolean,
     navBackStackEntry: NavBackStackEntry?,
     currentDestination: NavDestination?,
     onSaveClick: () -> Unit,
-    onSearchClick: () -> Unit,
     toggleTheme: () -> Unit,
     themeMode: ThemeMode,
+
+    onSearchClick: () -> Unit,
+    isSearchActive: Boolean,
+    onSearchQueryChange: (String) -> Unit,
+    searchQuery: String,
+    toggleSearchActiveState: () -> Unit,
 ) {
 
-    TopAppBar(
-        modifier = modifier,
-        title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                if (currentDestination?.isTopLevel() == true)
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.groww_logo),
-                        contentDescription = "Groww Logo",
-                        modifier = Modifier.size(32.dp)
-                    )
-                Text(
-                    text = navBackStackEntry?.arguments?.getString("title") ?: "Groww Stocks",
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+    AnimatedContent(
+        targetState = isSearchActive,
+        transitionSpec = {
+            if (targetState) {
+                (slideInHorizontally(initialOffsetX = { it }) + fadeIn()).togetherWith(
+                    slideOutHorizontally(targetOffsetX = { -it }) + fadeOut()
+                )
+            } else {
+                (slideInHorizontally(initialOffsetX = { -it }) + fadeIn()).togetherWith(
+                    slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
                 )
             }
         },
-        navigationIcon = {
-            if (currentDestination != null && navController.previousBackStackEntry != null && !currentDestination.isTopLevel()) {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
-            }
-        },
-        actions = {
-            // theme switcher
-            /*IconToggleButton(
-                checked = isAppInDarkMode,
-                onCheckedChange = {
-                    onDarkModeChange()
-                }
-            ) {
-                Icon(
-                    imageVector = if (isAppInDarkMode) ImageVector.vectorResource(R.drawable.outline_light_mode_24) else ImageVector.vectorResource(R.drawable.outline_dark_mode_24),
-                    contentDescription = "Dark Mode"
-                )
-            }*/
-            IconButton(onClick = {
-                toggleTheme()
-            }) {
-                Icon(
-                    imageVector = if (themeMode == ThemeMode.DARK) ImageVector.vectorResource(R.drawable.outline_light_mode_24) else ImageVector.vectorResource(R.drawable.outline_dark_mode_24),
-                    contentDescription = "Dark Mode"
-                )
-            }
-            currentDestination?.let { destination ->
-                when {
-                    destination.hasRoute(Route.Watchlist::class) -> {
-                        IconButton(onClick = { onSaveClick() }) {
-                            Icon(
-                                imageVector = if (isSaved) ImageVector.vectorResource(R.drawable.bookmark_added_filled_24px) else ImageVector.vectorResource(
-                                    R.drawable.bookmark_add_24px
-                                ),
-                                contentDescription = "save",
-                                tint = if (isSaved) MaterialTheme.colorScheme.primary else Color.Unspecified
-                            )
-                        }
-                    }
-
-                    // search icon
-                    destination.hasRoute(Route.Home::class) -> {
-                        IconButton(onClick = { onSearchClick() }) {
+        label = "TopAppBar Search Animation"
+    ) { isSearch ->
+        if (isSearch) {
+            SearchBar(
+                inputField = {
+                    SearchBarDefaults.InputField(
+//                        modifier = Modifier.padding(horizontal = 60.dp),
+                        query = searchQuery,
+                        onQueryChange = { onSearchQueryChange(it) },
+                        onSearch = {
+                            onSearchClick()
+                        },
+                        expanded = isSearchActive,
+                        onExpandedChange = { /*isSearchActive = it*/ },
+                        enabled = true,
+                        placeholder = { Text("Search stocks...") },
+                        leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Search,
-                                contentDescription = "search",
-//                            modifier = Modifier.size(24.dp)
+                                contentDescription = "Search"
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    if (searchQuery.isBlank())
+                                        toggleSearchActiveState()
+                                    else
+                                        onSearchQueryChange("")
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Close search"
+                                )
+                            }
+                        }
+                    )
+                },
+                expanded = searchQuery.isNotBlank(),
+                onExpandedChange = {
+//                    toggleSearchActiveState()
+                },
+                modifier = modifier
+                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp)
+                ,
+                content = {
+                    // Search results content can go here
+                    // You can show search suggestions or results
+                    Text(
+                        text = "Search results will appear here",
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            )
+
+        } else {
+            TopAppBar(
+                modifier = modifier,
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        if (currentDestination?.isTopLevel() == true)
+                            Image(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.groww_logo),
+                                contentDescription = "Groww Logo",
+                                modifier = Modifier.size(32.dp)
+                            )
+                        Text(
+                            text = navBackStackEntry?.arguments?.getString("title")
+                                ?: "Groww Stocks",
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                },
+                navigationIcon = {
+                    if (currentDestination != null && navController.previousBackStackEntry != null && !currentDestination.isTopLevel()) {
+                        IconButton(onClick = { navController.navigateUp() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back"
                             )
                         }
                     }
+                },
+                actions = {
+                    // Theme switcher
+                    IconButton(onClick = { toggleTheme() }) {
+                        Icon(
+                            imageVector = if (themeMode == ThemeMode.DARK)
+                                ImageVector.vectorResource(R.drawable.outline_light_mode_24)
+                            else
+                                ImageVector.vectorResource(R.drawable.outline_dark_mode_24),
+                            contentDescription = "Toggle theme"
+                        )
+                    }
 
-                    else -> {
+                    currentDestination?.let { destination ->
+                        when {
+                            destination.hasRoute(Route.Watchlist::class) -> {
+                                IconButton(onClick = { onSaveClick() }) {
+                                    Icon(
+                                        imageVector = if (isInWatchlist)
+                                            ImageVector.vectorResource(R.drawable.bookmark_added_filled_24px)
+                                        else
+                                            ImageVector.vectorResource(R.drawable.bookmark_add_24px),
+                                        contentDescription = "Save to watchlist",
+                                        tint = if (isInWatchlist) MaterialTheme.colorScheme.primary else Color.Unspecified
+                                    )
+                                }
+                            }
 
+                            // Search icon - activates search bar
+                            destination.hasRoute(Route.Home::class) -> {
+                                IconButton(onClick = {
+                                    toggleSearchActiveState()
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = "Search"
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
-            }
+            )
         }
-    )
+    }
 }

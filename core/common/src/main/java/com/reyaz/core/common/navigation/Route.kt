@@ -8,6 +8,9 @@ sealed interface Route {
     data object Home : Route
 
     @Serializable
+    data object Search : Route
+
+    @Serializable
     data object Watchlist : Route
 
     @Serializable

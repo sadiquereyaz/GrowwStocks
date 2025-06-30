@@ -38,6 +38,8 @@ class MainViewModel (private val themeRepository: ThemeRepository
             AppBarEvent.CloseAllOverlays -> closeAllOverlays()
 
             is AppBarEvent.SetLoading -> setLoading(event.loading)
+
+
         }
     }
 

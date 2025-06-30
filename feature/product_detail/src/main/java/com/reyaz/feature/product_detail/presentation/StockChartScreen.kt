@@ -24,7 +24,9 @@ import com.reyaz.feature.product_detail.presentation.components.PeriodSelector
 import com.reyaz.feature.product_detail.presentation.components.StockChart
 
 @Composable
-fun StockChartScreen(uiState: StockDetailUiState) {
+fun StockChartScreen(
+    modifier: Modifier = Modifier,
+    uiState: StockDetailUiState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
