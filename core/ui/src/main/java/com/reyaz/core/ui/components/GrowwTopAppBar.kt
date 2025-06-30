@@ -1,22 +1,22 @@
 package com.reyaz.core.ui.components
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,9 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,10 +41,10 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import com.reyaz.core.common.navigation.Route
-import com.reyaz.core.common.navigation.TopLevelDestination.Companion.isTopLevel
 import com.reyaz.core.common.R
 import com.reyaz.core.common.model.ThemeMode
+import com.reyaz.core.common.navigation.Route
+import com.reyaz.core.common.navigation.TopLevelDestination.Companion.isTopLevel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
@@ -67,7 +64,10 @@ fun GrowwTopAppBar(
     searchQuery: String,
     toggleSearchActiveState: () -> Unit,
 ) {
-
+    val animatedPadding by animateDpAsState(
+        targetValue = if (searchQuery.isBlank()) 16.dp else 0.dp,
+        label = "SearchBar Horizontal Padding"
+    )
     AnimatedContent(
         targetState = isSearchActive,
         transitionSpec = {
@@ -123,20 +123,19 @@ fun GrowwTopAppBar(
                 expanded = searchQuery.isNotBlank(),
                 onExpandedChange = {
 //                    toggleSearchActiveState()
-                },
-                modifier = modifier
+                    },
+                    modifier = modifier
                     .fillMaxWidth()
-//                    .padding(horizontal = 16.dp)
-                ,
-                content = {
-                    // Search results content can go here
-                    // You can show search suggestions or results
-                    Text(
-                        text = "Search results will appear here",
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            )
+                        .padding(horizontal = animatedPadding),
+                    content = {
+                        // Search results content can go here
+                        // You can show search suggestions or results
+                        Text(
+                            text = "Search results will appear here",
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                )
 
         } else {
             TopAppBar(
