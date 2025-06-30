@@ -1,15 +1,18 @@
 package com.reyaz.growwstocks.app_bar.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reyaz.core.common.model.ThemeMode
 import com.reyaz.growwstocks.app_bar.data.repository.ThemeRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val TAG = "MAIN_VIEW_MODEL"
 class MainViewModel (private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
@@ -46,6 +49,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
     private fun loadThemeMode() {
         viewModelScope.launch {
             themeRepository.getThemeMode().collect { mode ->
+                Log.d(TAG, "loadThemeMode: $mode")
                 _uiState.update {
                     it.copy(
                         themeMode = mode,
@@ -65,12 +69,19 @@ class MainViewModel (private val themeRepository: ThemeRepository
                 ThemeMode.DARK -> ThemeMode.SYSTEM
             }
             themeRepository.setThemeMode(newMode)
+            _uiState.update {
+                it.copy(themeMode = newMode)
+            }
         }
     }
+    val themeModeFlow: Flow<ThemeMode> = themeRepository.getThemeMode()
 
     private fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch {
             themeRepository.setThemeMode(mode)
+            _uiState.update {
+                it.copy(themeMode = mode)
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.reyaz.growwstocks.app_bar.data.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -29,8 +30,11 @@ class ThemeRepository (
     }
     
     suspend fun setThemeMode(mode: ThemeMode) {
+        Log.d(TAG, "saving theme: $mode")
         dataStore.edit { preferences ->
             preferences[themeKey] = mode.name
         }
     }
 }
+
+private const val TAG =  "THEME_REPOSITORY"

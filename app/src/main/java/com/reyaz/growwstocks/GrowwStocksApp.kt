@@ -42,8 +42,6 @@ fun GrowwStocksApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
