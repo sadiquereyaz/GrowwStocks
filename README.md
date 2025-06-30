@@ -3,6 +3,13 @@
 
 A modern stock market application built for the Groww assignment, showcasing Android development best practices with Jetpack Compose, Clean Architecture, and modern Android libraries.
 
+## Screenshots
+
+| Home Screen | Stock List | Stock Detail |
+|-------------|------------|--------------|
+|![image](https://github.com/user-attachments/assets/8f51a6a2-f4cb-4309-b420-f4046ceea411) |![image](https://github.com/user-attachments/assets/73123deb-7873-455c-9485-43d54858ad7b) | ![image](https://github.com/user-attachments/assets/8442dd93-f0b8-420d-b1d3-2345d60494ac)
+|![image](https://github.com/user-attachments/assets/dd69318a-0b9d-4a0d-a553-c0f0bc16f1f9) |![image](https://github.com/user-attachments/assets/d0355c11-c8d1-400b-b987-86ba4cecb217) | ![image](https://github.com/user-attachments/assets/465ace57-d460-4071-bc24-eee8c5613564)
+
 ## Features
 
 - **Stock Listings**: View top gainers and losers in the market
@@ -47,13 +54,6 @@ feature/ (Feature Modules)
 ├── product_list/
 └── watchlist/
 ```
-
-## Screenshots
-
-| Home Screen | Stock List | Stock Detail |
-|-------------|------------|--------------|
-|![image](https://github.com/user-attachments/assets/8f51a6a2-f4cb-4309-b420-f4046ceea411) |![image](https://github.com/user-attachments/assets/73123deb-7873-455c-9485-43d54858ad7b) | ![image](https://github.com/user-attachments/assets/8442dd93-f0b8-420d-b1d3-2345d60494ac)
-|![image](https://github.com/user-attachments/assets/dd69318a-0b9d-4a0d-a553-c0f0bc16f1f9) |![image](https://github.com/user-attachments/assets/d0355c11-c8d1-400b-b987-86ba4cecb217) | ![image](https://github.com/user-attachments/assets/465ace57-d460-4071-bc24-eee8c5613564)
 
 ## API Integration
 
