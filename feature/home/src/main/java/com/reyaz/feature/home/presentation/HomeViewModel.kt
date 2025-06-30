@@ -22,18 +22,6 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    /*    var isSearchActive by mutableStateOf(false)
-            private set
-
-        var searchQuery by mutableStateOf("")
-            private set
-
-        var searchResults by mutableStateOf<List<Item>>(emptyList())
-            private set*/
-
-    fun onSearchIconClicked() {
-        updateState { it.copy(isSearchActive = true) }
-    }
 
     init {
         getTopStocks()
@@ -61,11 +49,12 @@ class HomeViewModel(
                         }
 
                         is Resource.Error -> {
+                            Log.d(TAG, "refreshStocks: ${resource.message}")
                             updateState {
                                 it.copy(
                                     isRefreshing = false,
                                     isLoading = false,
-                                    error = it.error
+                                    error = resource.message
                                 )
                             }
                         }

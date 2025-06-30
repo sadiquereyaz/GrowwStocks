@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +29,12 @@ fun HomeScreen(
     ) {
         if (uiState.isLoading && !uiState.isRefreshing) {
             CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
+        } else if (uiState.error != null) {
+            Text(
+                text = uiState.error,
+                modifier = modifier.align(Alignment.Center),
+                color = MaterialTheme.colorScheme.error
+            )
         } else
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -36,7 +44,12 @@ fun HomeScreen(
                         StockListContainer(
                             modifier = Modifier,
                             onItemClick = { id, name -> navigateToDetail(id, name) },
-                            navigateToStockList = { navigateToList(StockType.UP.ordinal, "Top Gainers") },
+                            navigateToStockList = {
+                                navigateToList(
+                                    StockType.UP.ordinal,
+                                    "Top Gainers"
+                                )
+                            },
                             heading = "Top Gainers",
                             list = uiState.topGainer
                         )
@@ -46,7 +59,12 @@ fun HomeScreen(
                         StockListContainer(
                             modifier = Modifier,
                             onItemClick = { id, name -> navigateToDetail(id, name) },
-                            navigateToStockList = { navigateToList(StockType.DOWN.ordinal, "Top Losers") },
+                            navigateToStockList = {
+                                navigateToList(
+                                    StockType.DOWN.ordinal,
+                                    "Top Losers"
+                                )
+                            },
                             heading = "Top Losers",
                             list = uiState.topLoser
                         )
