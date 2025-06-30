@@ -12,7 +12,7 @@ import com.reyaz.core.common.navigation.Route
 import com.reyaz.feature.home.presentation.HomeScreen
 import com.reyaz.feature.home.presentation.HomeViewModel
 import com.reyaz.feature.product_detail.presentation.StockDetailViewModel
-import com.reyaz.feature.product_detail.presentation.archive.StockChartScreen
+import com.reyaz.feature.product_detail.presentation.StockChartScreen
 import com.reyaz.feature.product_list.presentation.StockListScreen
 import com.reyaz.feature.product_list.presentation.StockListViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -25,8 +25,8 @@ fun AppNavHost(
     NavHost(
         modifier =  modifier,
         startDestination = Route.
-//                Home
-        StockDetail("", "")
+                Home
+//        StockDetail("", "")
         ,
         navController = navController,
     ) {

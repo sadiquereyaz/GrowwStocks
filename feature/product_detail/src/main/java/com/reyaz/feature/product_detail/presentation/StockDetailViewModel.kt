@@ -1,5 +1,6 @@
 package com.reyaz.feature.product_detail.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reyaz.core.common.Resource

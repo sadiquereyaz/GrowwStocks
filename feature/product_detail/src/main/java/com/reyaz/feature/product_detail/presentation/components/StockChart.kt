@@ -1,4 +1,4 @@
-package com.reyaz.feature.product_detail.presentation.archive
+package com.reyaz.feature.product_detail.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -6,10 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
@@ -63,7 +61,8 @@ fun StockChart(points: List<Point>) {
                         radius = 2.dp
                     ),
                     shadowUnderLine = ShadowUnderLine(
-                        alpha = 0.2f,
+//                        alpha = 0.2f,
+                        color = Color.Transparent
                         /*brush = Brush.verticalGradient(
                             colors = listOf(MaterialTheme.colorScheme.primary, Color.Transparent)
                         )*/
@@ -95,6 +94,7 @@ fun StockChart(points: List<Point>) {
             .axisLabelColor(Color.Transparent)
             .labelAndAxisLinePadding(0.dp)
             .build(),
+//        backgroundColor = Color.Transparent,
         backgroundColor = MaterialTheme.colorScheme.surface,
         // Disable scrolling and zooming for dense continuous graph
         isZoomAllowed = false,

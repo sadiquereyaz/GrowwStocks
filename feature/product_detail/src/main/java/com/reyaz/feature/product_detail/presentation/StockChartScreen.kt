@@ -1,6 +1,4 @@
-package com.reyaz.feature.product_detail.presentation.archive
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+package com.reyaz.feature.product_detail.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,12 +6,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,9 +19,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.reyaz.core.common.Resource
-import com.reyaz.core.network.domain.TimePeriod
 import com.reyaz.feature.product_detail.data.ChartDataConverter
-import com.reyaz.feature.product_detail.presentation.StockDetailUiState
+import com.reyaz.feature.product_detail.presentation.components.PeriodSelector
+import com.reyaz.feature.product_detail.presentation.components.StockChart
 
 @Composable
 fun StockChartScreen(uiState: StockDetailUiState) {
@@ -41,7 +36,7 @@ fun StockChartScreen(uiState: StockDetailUiState) {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = Color.Green)
+                    CircularProgressIndicator()
                 }
             }
             
@@ -54,7 +49,7 @@ fun StockChartScreen(uiState: StockDetailUiState) {
                     data.message?.let {
                         Text(
                             text = it,
-                            color = Color.Red,
+                            color = MaterialTheme.colorScheme.error,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -72,13 +67,6 @@ fun StockChartScreen(uiState: StockDetailUiState) {
                 val points = data.data?.let { ChartDataConverter.convertToPoints(it) }
                 val (change, changePercent) = ChartDataConverter.calculatePriceChange(data.data!!)
                 val currentPrice = data.data?.lastOrNull()?.close ?: 0.0
-                
-                // Stock Info Header
-                Text(
-                    text = "Torrent Pharmaceuticals",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
                 
                 Text(
                     text = ChartDataConverter.formatPrice(currentPrice),
@@ -116,39 +104,3 @@ fun StockChartScreen(uiState: StockDetailUiState) {
     }
 }
 
-@Composable
-fun PeriodSelector(
-    currentPeriod: TimePeriod,
-    onPeriodSelected: (TimePeriod) -> Unit
-) {
-    val periods = listOf(
-        "1D" to TimePeriod.ONE_DAY,
-        "1W" to TimePeriod.ONE_WEEK,
-        "1M" to TimePeriod.ONE_MONTH,
-        "1Y" to TimePeriod.ONE_YEAR,
-        "5Y" to TimePeriod.FIVE_YEAR,
-        "ALL" to TimePeriod.ALL
-    )
-    
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(periods) { (label, period) ->
-            val isSelected = currentPeriod == period
-            
-            Button(
-                onClick = { onPeriodSelected(period) },
-                colors = ButtonDefaults.buttonColors(
-                   // backgroundColor = if (isSelected) Color.Green else Color.Transparent
-                ),
-                border = if (!isSelected) BorderStroke(1.dp, Color.Gray) else null,
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                Text(
-                    text = label,
-//                    color = if (isSelected) Color.Black else Color.White
-                )
-            }
-        }
-    }
-}

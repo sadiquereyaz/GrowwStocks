@@ -6,6 +6,7 @@ import com.reyaz.core.database.dao.GrowwDao
 import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
 import com.reyaz.core.network.data.remote.dto.AlphaVantageResponse
 import com.reyaz.core.database.entity.DailyPrice
+import com.reyaz.core.network.data.remote.dto.CompanyOverviewResponse
 import com.reyaz.core.network.domain.StockData
 import com.reyaz.core.network.domain.TimePeriod
 import java.text.SimpleDateFormat
@@ -15,7 +16,7 @@ import java.util.Locale
 private const val TAG = "STOCK_REPOSITORY_IMPL"
 
 class StockRepositoryImpl(
-    private val apiService: AlphaVantageApiService,
+    private val alphaVantageApiService: AlphaVantageApiService,
     private val growwDao: GrowwDao
 ) : StockRepository {
 
@@ -23,7 +24,7 @@ class StockRepositoryImpl(
 
     override suspend fun getStockData(symbol: String): Resource<StockData> {
         return try {
-            val response = apiService.getDailyTimeSeries(symbol = symbol)
+            val response = alphaVantageApiService.getDailyTimeSeries(symbol = symbol)
 
             when {
                 response.errorMessage != null -> {
@@ -53,8 +54,10 @@ class StockRepositoryImpl(
         period: TimePeriod
     ): Resource<List<DailyPrice>> {
         val getLocalData = growwDao.getStockDetail()
-        if (getLocalData.isNotEmpty())
+        if (getLocalData.isNotEmpty()) {
+            Log.d(TAG, "getFilteredStockData: ${getLocalData.size}")
             return Resource.Success(getLocalData)
+        }
         return when (val result = getStockData(symbol)) {
             is Resource.Success -> {
                 val filteredData = result.data?.let { filterDataByPeriod(it.dailyPrices, period) }
@@ -69,6 +72,43 @@ class StockRepositoryImpl(
 
             is Resource.Error -> Resource.Error(result.message)
             is Resource.Loading -> Resource.Loading()
+        }
+    }
+
+    suspend fun fetchLatestStockPrice(symbol: String): Resource<Double> { // Changed return type to more data type
+        return try {
+            val response = alphaVantageApiService.getGlobalQuote(symbol = symbol)
+            if (response.isSuccessful) {
+                val body = response.body()
+                val price = body?.globalQuote?.price?.toDoubleOrNull()
+                if (price != null) {
+                    Resource.Success(price)
+                } else {
+                    Resource.Error("Price not available")
+                }
+            } else {
+                Resource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Unknown error")
+        }
+    }
+
+    suspend fun fetchCompanyOverview(symbol: String): Resource<CompanyOverviewResponse> {
+        return try {
+            val response = alphaVantageApiService.getCompanyOverview(symbol = symbol)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.name != null) {
+                    Resource.Success(body)
+                } else {
+                    Resource.Error("Company overview not available")
+                }
+            } else {
+                Resource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Unknown error")
         }
     }
 
@@ -100,7 +140,6 @@ class StockRepositoryImpl(
         dailyPrices: List<DailyPrice>,
         period: TimePeriod
     ): List<DailyPrice> {
-        if (period == TimePeriod.ALL) return dailyPrices
 
         val calendar = Calendar.getInstance()
         val endTime = calendar.timeInMillis
