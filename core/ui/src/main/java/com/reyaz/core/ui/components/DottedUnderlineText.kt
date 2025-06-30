@@ -25,12 +25,14 @@ fun DottedUnderlineText(
     underlineThickness: Dp = 1.dp,
     dashLength: Float = 8f,
     gapLength: Float = 6f,
+    fontSize: Int = 12,
     onClick: (() -> Unit)? = null
 ) {
     Text(
         text = AnnotatedString(text),
-        fontSize = 12.sp,
+        fontSize =fontSize.sp,
         lineHeight = 1.sp,
+        color = color,
         modifier = modifier
             .clickable {  onClick?.invoke() }   // todo: add padding and curves
             .drawBehind {

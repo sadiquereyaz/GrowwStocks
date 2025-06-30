@@ -27,8 +27,8 @@ fun AppNavHost(
     NavHost(
         modifier = modifier,
         startDestination =
-//            Route.Home,
-            Route.StockDetailRoute("dummy title", "ticker titel", "$100.3")
+            Route.Home
+//            Route.StockDetailRoute()
 //        Route.AllWatchlist()
                 ,
 
@@ -52,7 +52,7 @@ fun AppNavHost(
                         Route.StockDetailRoute(
                             ticker = id,
                             title = name,
-                            price = "$43"
+//                            logoUrl = null
                         )
                     )
                 },
@@ -70,7 +70,7 @@ fun AppNavHost(
                     navController.navigate(
                         Route.StockDetailRoute(
                             ticker = id,
-                            price = "$43",
+//                            price = "$43",
                             title = name
                         )
                     )
@@ -97,7 +97,7 @@ fun AppNavHost(
                     navController.navigate(
                         Route.StockDetailRoute(
                             ticker = id,
-                            price = "$43",
+//                            price = "$43",
                             title = name
                         )
                     )
@@ -105,21 +105,11 @@ fun AppNavHost(
             )
         }
 
-        composable<Route.StockDetailRoute> { backStackEntry ->
-            /* val detailsRoute = backStackEntry.toRoute<Route.StockDetail>()
-             val viewModel : StockDetailViewModel = koinViewModel()
-             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-             StockDetailScreen(
-                 uiState = uiState,
-                 onEvent = viewModel::onEvent,
-             )*/
-
-//            StockGraphScreen()
+        composable<Route.StockDetailRoute> {
             val viewModel: StockDetailViewModel = koinViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             StockChartScreen(
                 uiState = uiState,
-//                onEvent = viewModel::onEvent,
             )
         }
 

@@ -3,10 +3,10 @@ package com.reyaz.feature.product_detail.data
 import android.util.Log
 import com.reyaz.core.common.Resource
 import com.reyaz.core.database.dao.GrowwDao
+import com.reyaz.core.database.entity.DailyPrice
 import com.reyaz.core.network.data.remote.api.AlphaVantageApiService
 import com.reyaz.core.network.data.remote.dto.AlphaVantageResponse
-import com.reyaz.core.database.entity.DailyPrice
-import com.reyaz.core.network.data.remote.dto.CompanyOverviewResponse
+import com.reyaz.core.network.data.remote.dto.CompanyOverview
 import com.reyaz.core.network.domain.StockData
 import com.reyaz.core.network.domain.TimePeriod
 import java.text.SimpleDateFormat
@@ -61,9 +61,9 @@ class StockRepositoryImpl(
         return when (val result = getStockData(symbol)) {
             is Resource.Success -> {
                 val filteredData = result.data?.let { filterDataByPeriod(it.dailyPrices, period) }
-                filteredData?.forEach {
-                    Log.d(TAG, "getFilteredStockData: $it")
-                }
+//                filteredData?.forEach {
+//                    Log.d(TAG, "getFilteredStockData: $it")
+//                }
                 if (filteredData != null) {
                     growwDao.insertAllStockDetail(filteredData)
                 }
@@ -94,18 +94,20 @@ class StockRepositoryImpl(
         }
     }
 
-    suspend fun fetchCompanyOverview(symbol: String): Resource<CompanyOverviewResponse> {
+    override suspend fun getCompanyInfo(symbol: String): Resource<CompanyOverview> {
         return try {
             val response = alphaVantageApiService.getCompanyOverview(symbol = symbol)
+            Log.d(TAG, "getCompanyInfo: ${response.body()?.limitExceeded}")
             if (response.isSuccessful) {
-                val body = response.body()
-                if (body != null && body.name != null) {
-                    Resource.Success(body)
-                } else {
-                    Resource.Error("Company overview not available")
-                }
+                response.body()?.let {
+                    if (it.limitExceeded == null) {
+                        Resource.Success(it)
+                    } else {
+                        Resource.Error("API limit exceeded")
+                    }
+                } ?: Resource.Error("No data available")
             } else {
-                Resource.Error(response.message())
+                Resource.Error("Invalid Url")
             }
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Unknown error")

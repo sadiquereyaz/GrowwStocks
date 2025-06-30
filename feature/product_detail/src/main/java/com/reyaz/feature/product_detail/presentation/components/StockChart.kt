@@ -26,12 +26,13 @@ fun StockChart(points: List<Point>) {
     val screenWidthDp = with(density) { windowSize.width.toDp() }
 
     val calculatedStepSize = if (points.isNotEmpty()) {
-        ((screenWidthDp - 32.dp) / points.size)
+        ((screenWidthDp) / points.size)
     } else {
         1.dp
     }
 
     val lineChartData = LineChartData(
+        paddingTop = 48.dp,
         linePlotData = LinePlotData(
             lines = listOf(
                 Line(
@@ -98,7 +99,6 @@ fun StockChart(points: List<Point>) {
         backgroundColor = MaterialTheme.colorScheme.surface,
         // Disable scrolling and zooming for dense continuous graph
         isZoomAllowed = false,
-        paddingTop = 0.dp,
         paddingRight = 0.dp,
         bottomPadding = 0.dp,
         containerPaddingEnd = 0.dp,

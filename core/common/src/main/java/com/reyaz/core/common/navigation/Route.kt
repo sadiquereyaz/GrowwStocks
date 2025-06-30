@@ -17,6 +17,6 @@ sealed interface Route {
     data class StockList(val type: Int, val title: String) : Route
 
     @Serializable
-    data class StockDetailRoute(val title: String, val ticker: String, val price: String) : Route
+    data class StockDetailRoute(val title: String = "C-Pharma Pvt.", val ticker: String = "CLNNW", val logoUrl: String? = "https://img.freepik.com/free-vector/cryptocurrency-bitcoin-golden-coin-background_1017-31505.jpg?semt=ais_hybrid&w=740") : Route
 
 }
