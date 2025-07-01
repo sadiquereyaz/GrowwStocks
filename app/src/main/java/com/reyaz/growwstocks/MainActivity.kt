@@ -1,10 +1,12 @@
 package com.reyaz.growwstocks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,7 +17,7 @@ import com.reyaz.core.common.model.ThemeMode
 import com.reyaz.growwstocks.app_bar.presentation.AppBarEvent
 import com.reyaz.growwstocks.app_bar.presentation.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+private const val TAG = "MAIN_ACTIVITY"
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,6 @@ class MainActivity : ComponentActivity() {
                 ThemeMode.DARK -> true
                 ThemeMode.SYSTEM -> systemInDarkTheme
             }
-
             SideEffect {
                 if (uiState.isThemeLoaded) {
                     WindowCompat.getInsetsController(window, window.decorView).apply {

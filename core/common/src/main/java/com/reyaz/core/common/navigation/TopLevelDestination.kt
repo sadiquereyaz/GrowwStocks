@@ -22,7 +22,7 @@ enum class TopLevelDestination(
         unSelectedIcon = R.drawable.bookmarks_24px,
         selectedIcon = R.drawable.bookmarks_filled_24px,
         label = "Watchlist",
-        route = Route.Watchlist
+        route = Route.AllWatchlist()
     );
 
     companion object {

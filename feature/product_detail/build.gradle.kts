@@ -69,4 +69,8 @@ dependencies {
 
     //convertor
     implementation(libs.retrofit.converter.gson)
+
+    // coil
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
 }

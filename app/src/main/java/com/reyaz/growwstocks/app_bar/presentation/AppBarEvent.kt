@@ -11,9 +11,11 @@ sealed class AppBarEvent {
     data object ActivateSearch : AppBarEvent()
     data object DeactivateSearch : AppBarEvent()
 
-    data object ToggleBookmarks : AppBarEvent()
+    data object ToggleBottomSheet : AppBarEvent()
     data object ShowBookmarks : AppBarEvent()
     data object HideBookmarks : AppBarEvent()
+
+
     data object CloseAllOverlays : AppBarEvent()
     data class SetLoading(val loading: Boolean) : AppBarEvent()
 }

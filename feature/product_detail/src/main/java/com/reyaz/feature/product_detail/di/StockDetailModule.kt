@@ -8,5 +8,5 @@ import org.koin.dsl.module
 val stockDetailModule = module {
 
     single<StockRepository> { StockRepositoryImpl(get(), get()) }
-    viewModel { com.reyaz.feature.product_detail.presentation.StockDetailViewModel(get()) }
+    viewModel { com.reyaz.feature.product_detail.presentation.StockDetailViewModel(get(), get()) }
 }

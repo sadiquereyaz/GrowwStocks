@@ -1,9 +1,9 @@
 package com.reyaz.core.database
 
 import com.reyaz.core.common.model.Stock
-import com.reyaz.core.database.entity.StockEntity
+import com.reyaz.core.database.entity.StockTable
 
-fun StockEntity.toDomain(): Stock {
+fun StockTable.toDomain(): Stock {
     return Stock(
         name = name,
         price = price,

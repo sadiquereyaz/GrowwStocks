@@ -1,15 +1,18 @@
 package com.reyaz.growwstocks.app_bar.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reyaz.core.common.model.ThemeMode
 import com.reyaz.growwstocks.app_bar.data.repository.ThemeRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val TAG = "MAIN_VIEW_MODEL"
 class MainViewModel (private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
@@ -31,7 +34,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
             is AppBarEvent.UpdateSearchQuery -> updateSearchQuery(event.query)
             AppBarEvent.ClearSearch -> clearSearch()
 
-            AppBarEvent.ToggleBookmarks -> toggleBookmarks()
+            AppBarEvent.ToggleBottomSheet -> toggleBottomSheet()
             AppBarEvent.ShowBookmarks -> showBookmarks()
             AppBarEvent.HideBookmarks -> hideBookmarks()
 
@@ -46,6 +49,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
     private fun loadThemeMode() {
         viewModelScope.launch {
             themeRepository.getThemeMode().collect { mode ->
+                Log.d(TAG, "loadThemeMode: $mode")
                 _uiState.update {
                     it.copy(
                         themeMode = mode,
@@ -64,13 +68,13 @@ class MainViewModel (private val themeRepository: ThemeRepository
                 ThemeMode.LIGHT -> ThemeMode.DARK
                 ThemeMode.DARK -> ThemeMode.SYSTEM
             }
+            themeRepository.setThemeMode(newMode)
             _uiState.update {
                 it.copy(themeMode = newMode)
             }
-            themeRepository.setThemeMode(newMode)
-
         }
     }
+    val themeModeFlow: Flow<ThemeMode> = themeRepository.getThemeMode()
 
     private fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch {
@@ -93,7 +97,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
                 // Opening search - close bookmarks if open
                 currentState.copy(
                     isSearchActive = true,
-                    showBookmarks = false
+                    isBottomSheetVisible = false
                 )
             }
         }
@@ -103,7 +107,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
         _uiState.update {
             it.copy(
                 isSearchActive = true,
-                showBookmarks = false
+                isBottomSheetVisible = false
             )
         }
     }
@@ -129,18 +133,13 @@ class MainViewModel (private val themeRepository: ThemeRepository
         }
     }
 
-    // Bookmark functions
-    fun toggleBookmarks() {
+    private fun toggleBottomSheet() {
         _uiState.update { currentState ->
-            if (currentState.showBookmarks) {
-                // Closing bookmarks
-                currentState.copy(showBookmarks = false)
+            if (currentState.isBottomSheetVisible) {
+                currentState.copy(isBottomSheetVisible = false)
             } else {
-                // Opening bookmarks - close search if active
                 currentState.copy(
-                    showBookmarks = true,
-                    isSearchActive = false,
-                    searchQuery = ""
+                    isBottomSheetVisible = true,
                 )
             }
         }
@@ -149,7 +148,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
     fun showBookmarks() {
         _uiState.update {
             it.copy(
-                showBookmarks = true,
+                isBottomSheetVisible = true,
                 isSearchActive = false,
                 searchQuery = ""
             )
@@ -158,7 +157,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
 
     fun hideBookmarks() {
         _uiState.update {
-            it.copy(showBookmarks = false)
+            it.copy(isBottomSheetVisible = false)
         }
     }
 
@@ -167,7 +166,7 @@ class MainViewModel (private val themeRepository: ThemeRepository
         _uiState.update {
             it.copy(
                 isSearchActive = false,
-                showBookmarks = false,
+                isBottomSheetVisible = false,
                 searchQuery = ""
             )
         }

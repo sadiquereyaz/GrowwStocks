@@ -2,11 +2,9 @@ package com.reyaz.core.network.data.remote.api
 
 import com.reyaz.core.network.BuildConfig
 import com.reyaz.core.network.data.remote.dto.AlphaVantageResponse
-import com.reyaz.core.network.data.remote.dto.CompanyDetailsResponse
-import com.reyaz.core.network.data.remote.dto.CompanyOverviewResponse
+import com.reyaz.core.network.data.remote.dto.CompanyOverview
 import com.reyaz.core.network.data.remote.dto.GainerLoserResponse
 import com.reyaz.core.network.data.remote.dto.GlobalQuoteResponse
-import com.reyaz.core.network.data.remote.dto.VintageOverviewResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -45,5 +43,5 @@ interface AlphaVantageApiService {
         @Query("function") function: String = "OVERVIEW",
         @Query("symbol") symbol: String,
         @Query("apikey") apiKey: String = BuildConfig.ALPHA_VINTAGE_API_KEY
-    ): Response<CompanyOverviewResponse>
+    ): Response<CompanyOverview>
 }
