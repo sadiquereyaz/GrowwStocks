@@ -27,8 +27,8 @@ class StockRepositoryImpl(
             val response = alphaVantageApiService.getDailyTimeSeries(symbol = symbol)
 
             when {
-                response.errorMessage != null -> {
-                    Resource.Error("API Error: ${response.errorMessage}")
+                response.errorMessage != null || response.apiLimitExceeded != null -> {
+                    Resource.Error("API Error: ${response.errorMessage ?: "Api Limit Exceeded"}")
                 }
 
                 response.note != null -> {

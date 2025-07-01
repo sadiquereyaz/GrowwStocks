@@ -3,6 +3,8 @@ package com.reyaz.core.network.data.remote.dto
 import com.google.gson.annotations.SerializedName
 
 data class AlphaVantageResponse(
+    @SerializedName("Information")
+    val apiLimitExceeded: String? = null,
     @SerializedName("Meta Data")
     val metaData: MetaData? = null,
     @SerializedName("Time Series (Daily)")

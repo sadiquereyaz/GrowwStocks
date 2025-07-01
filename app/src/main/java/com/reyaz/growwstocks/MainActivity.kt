@@ -42,13 +42,6 @@ class MainActivity : ComponentActivity() {
                         isAppearanceLightStatusBars = !currentDarkMode
                         isAppearanceLightNavigationBars = !currentDarkMode
                     }
-                    if (uiState.themeMode == ThemeMode.SYSTEM) {
-                        mainViewModel.onEvent(
-                            AppBarEvent.SetThemeMode(
-                                if (currentDarkMode) ThemeMode.DARK else ThemeMode.LIGHT
-                            )
-                        )
-                    }
                 }
             }
 
@@ -59,14 +52,6 @@ class MainActivity : ComponentActivity() {
                     GrowwStocksApp(
                         uiState = uiState,
                         onEvent = mainViewModel::onEvent,
-//                        onDarkModeChange = mainViewModel::toggleTheme,
-//                        isAppInDarkMode = uiState.themeMode == ThemeMode.DARK
-//                        onSearchToggle = mainViewModel::toggleSearch,
-//                        onSearchQueryChange = mainViewModel::updateSearchQuery,
-//                        onSearchClose = mainViewModel::deactivateSearch,
-//                        onBookmarkToggle = mainViewModel::toggleBookmarks,
-//                        onBookmarkClose = mainViewModel::hideBookmarks,
-//                        onCloseAllOverlays = mainViewModel::closeAllOverlays
                     )
                 }
             }
