@@ -64,13 +64,20 @@ class MainViewModel (private val themeRepository: ThemeRepository
                 ThemeMode.LIGHT -> ThemeMode.DARK
                 ThemeMode.DARK -> ThemeMode.SYSTEM
             }
+            _uiState.update {
+                it.copy(themeMode = newMode)
+            }
             themeRepository.setThemeMode(newMode)
+
         }
     }
 
     private fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch {
             themeRepository.setThemeMode(mode)
+            _uiState.update {
+                it.copy(themeMode = mode)
+            }
         }
     }
 
